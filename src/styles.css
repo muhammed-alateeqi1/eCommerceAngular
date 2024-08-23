@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&family=Encode+Sans:wght@100..900&display=swap');
+:root{
+    --font-family: "Encode Sans Expanded", sans-serif ;
+}
+body{
+    font-family: var(--font-family);
+}

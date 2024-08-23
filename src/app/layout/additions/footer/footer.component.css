@@ -1,0 +1,26 @@
+footer{
+    padding: 80px;
+    background-color:#f0f3f2;
+}
+.form-control{
+    width: 80%;
+}
+.share-btn{
+    width: 15%;
+    margin-right: 30px;
+}
+hr{
+    color: rgba(128, 128, 128, 0.671);
+    width: 98%;
+    margin-top: 20px;
+}
+.pay-img{
+    width: 7%;
+    object-fit: contain;
+    margin: 5px;
+}
+.store-img{
+    width: 15%;
+    object-fit: contain;
+    margin: 5px;
+}
