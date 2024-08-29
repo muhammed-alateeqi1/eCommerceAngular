@@ -1,7 +1,10 @@
-export interface registerData{
-    name:string;
+export interface registerData extends loginData{
     email:string;
-    password:string;
     rePassword:string;
     phone:string;
+}
+
+export interface loginData {
+    name:'string',
+    password:'string'
 }

@@ -84,7 +84,19 @@
           </div>
         }
       </div>
-      <button [disabled]="registerForm.invalid" class="btn btn-success mb-3 ms-auto d-block">Register</button>
+      @if(errMsg){
+        <div class="alert alert-danger p-1 m-2">
+            <p class="p-1 m-1">{{errMsg}}</p>
+        </div>
+      }
+      <button [disabled]="registerForm.invalid" class="btn btn-success mb-3 ms-auto d-block">
+        @if(isLoading){
+          <span> <i class="fa fa-spin fa-spinner small"></i></span>
+        }@else{
+          <span>Register</span>
+        }
+      </button>
+    
     </form>
   </div>
 </section>
