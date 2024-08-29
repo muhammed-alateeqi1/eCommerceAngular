@@ -52,5 +52,7 @@ export class RegisterComponent {
       });
     }
     console.log(this.registerForm.value);
+    console.log("test");
+    
   }
 }
