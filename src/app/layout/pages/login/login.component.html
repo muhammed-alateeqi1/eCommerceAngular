@@ -1,49 +1,57 @@
 <section class="login">
-  <div class="w-75 mx-auto">
-    <h1 class="h4 mt-3">Login Now</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-      <div class="my-3">
-        <label for="email">email:</label>
-        <input formControlName="email" type="email" id="email" class="form-control" >
-        @if(loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched){
-          <div class="alert alert-danger p-0 mt-1">
-            @if(loginForm.get('email')?.errors?.['required']){
-              <p class="p-1 m-0">Email is required </p> 
-            }
-            @else if(loginForm.get('email')?.errors?.['email']){
-              <p class="p-1 m-0">Enter Valid Email </p> 
-            }
-          </div>
-        }
-      </div>
-      <div class="my-3">
-        <label for="password">password:</label>
-        <input  formControlName="password" type="password" id="password" class="form-control">
-        @if(loginForm.get('password')?.errors && loginForm.get('password')?.touched){
-          <div class="alert alert-danger p-0 mt-1">
-            @if(loginForm.get('password')?.errors?.['required']){
-              <p class="p-1 m-0">password is required </p> 
-            }@else if(loginForm.get('password')?.errors?.['minlength']){
-              <p class="p-1 m-0">password must be at least 8 characters</p>
-            }@else if(loginForm.get('password')?.errors?.['pattern']){
-              <p class="p-1 m-0">password must contain at least one uppercase letter and one special character</p>
-            }
-          </div>
-        }
-      </div>
-      @if (errLoginMsg) {
-        <div class="alert alert-danger p-1 my-1">
-          <p class="p-1 my-1">{{errLoginMsg}}</p>
+  <div class="container">
+    <div class=" w-3/4 mx-auto">
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+        <h1 class="font-medium text-2xl mt-3">Login Now</h1>
+        <div class="my-3">
+          <label for="email">email:</label>
+          <input formControlName="email" type="email" id="email" class="w-full rounded" >
+          @if(loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched){
+            <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-red-400">
+              @if(loginForm.get('email')?.errors?.['required']){
+                <span class="font-medium">Email is required </span> 
+              }
+              @else if(loginForm.get('email')?.errors?.['email']){
+                <span class="font-medium">Enter Valid Email </span> 
+              }
+            </div>
+          }
         </div>
-      }
-     
-      <button class="btn btn-success mb-3 ms-auto d-block">
-        @if(successLogedIn){
-          <span> <i class="fa fa-spin fa-spinner small"></i></span>
-        }@else{
-          <span>Login</span>
+        <div class="my-3">
+          <label for="password">password:</label>
+          <input  formControlName="password" type="password" id="password" class="w-full rounded">
+          @if(loginForm.get('password')?.errors && loginForm.get('password')?.touched){
+            <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-red-400">
+              @if(loginForm.get('password')?.errors?.['required']){
+                <span class="font-medium">password is required </span> 
+              }@else if(loginForm.get('password')?.errors?.['minlength']){
+                <span class="font-medium">password must be at least 8 characters</span>
+              }@else if(loginForm.get('password')?.errors?.['pattern']){
+                <span class="font-medium">password must contain at least one uppercase letter and one special character</span>
+              }
+            </div>
+          }
+        </div>
+        @if (errLoginMsg) {
+          <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-red-400">
+            <p class="font-medium">{{errLoginMsg}}</p>
+          </div>
         }
-      </button>
-    </form>
+       
+        <div class="flex justify-between align-center">
+          <a class=" me-1 forget-password cursor-pointer underline text-blue-700" routerLink="/forgetpassword" >Forgot Password</a>
+          <button class="bg-main px-2 py-2 rounded text-white">
+            @if(successLogedIn){
+              <span> <i class="fa fa-spin fa-spinner small"></i></span>
+            }@else{
+              <span>Login</span>  
+            }
+          </button>
+        </div>
+      
+        
+      </form>
+    </div>
   </div>
+ 
 </section>

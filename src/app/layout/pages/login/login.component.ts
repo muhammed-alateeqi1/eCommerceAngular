@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+  import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { loginService } from '../../../shared/services/authorization/login-service.service';
 import { loginData } from '../../../shared/interfaces/data';
 import { HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule],
+  imports: [ReactiveFormsModule, HttpClientModule ,RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -24,6 +24,8 @@ export class LoginComponent {
     if(this.loginForm.valid){
       this.successLogedIn = true
       const loginFormData:loginData = this.loginForm.value as loginData;
+      console.log(this.loginForm);
+      
       this._loginService.signIn(loginFormData).subscribe({
         next: (response) => {
           console.log("login Successful", response);
@@ -44,9 +46,6 @@ export class LoginComponent {
       });
     }
   }
-  logout(){
-    localStorage.removeItem('userToken');
-    this._Router.navigate(["/login"])
-  }
+
 }
 

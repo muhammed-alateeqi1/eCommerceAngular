@@ -33,7 +33,6 @@ export class loginService {
     const decoded = jwtDecode<decodedData>(token);
     this.userData.next(decoded) 
     console.log(this.userData.getValue());
-    
   }
 
 

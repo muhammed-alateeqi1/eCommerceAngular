@@ -8,6 +8,7 @@ import { ProductsComponent } from './layout/pages/products/products.component';
 import { RegisterComponent } from './layout/pages/register/register.component';
 import { CategoriesComponent } from './layout/pages/categories/categories.component';
 import { authGuard } from './shared/guards/auth.guard';
+import { ForgetpasswordComponent } from './layout/additions/forgetpassword/forgetpassword.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'home' , pathMatch:'full'},
@@ -18,6 +19,7 @@ export const routes: Routes = [
     {path:'brands',component:BrandsComponent , canActivate:[authGuard]},
     {path:'login',component:LoginComponent},
     {path:'register',component:RegisterComponent},
+    {path:'forgetpassword',component:ForgetpasswordComponent},
     {path:'**',component:NotfoundComponent}, //wildCard (wrong path)
 ];
     
