@@ -4,10 +4,17 @@ footer {
 }
 @media (max-width:640px){
     span{
-        font-size: 10px;
+        font-size: 15px;
         object-fit: contain;
     }
-    .payment{
+    .apps{
         flex-direction: column;
+    }
+    .apps span{
+        margin: 10px 0px;
+    }
+    .payment span{
+        object-fit: contain;
+        width: fit-content;
     }
 }

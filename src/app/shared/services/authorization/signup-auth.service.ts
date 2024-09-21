@@ -13,6 +13,6 @@ export class SignupAuthService {
   constructor(private _HttpClient: HttpClient) {}
 
   signUp(data:registerData): Observable<successRegister | FiledRegister> {
-    return this._HttpClient.post<successRegister | FiledRegister>(`${Environment.baseUrl}/api/v1/auth/signup`, data);
+    return this._HttpClient.post<successRegister | FiledRegister>(`${Environment.baseUrl}api/v1/auth/signup`, data);
   }
 }

@@ -28,7 +28,7 @@ export class LoginComponent {
       
       this._loginService.signIn(loginFormData).subscribe({
         next: (response) => {
-          console.log("login Successful", response);
+          console.log("Registeration Successful", response);
           localStorage.setItem('userToken',response.token)
           this._loginService.decodeUserData(); // method to decode the token
           this._Router.navigate(["/home"])
@@ -37,7 +37,7 @@ export class LoginComponent {
         error: (err) => {
           console.error('loginForm Error', err)
           this.errLoginMsg = err.error.message;
-          console.log(this.errLoginMsg);
+          // console.log(this.errLoginMsg);
           if(this.errLoginMsg == "fail"){
             this.errLoginMsg = "You Should Enter Your Password"
           }

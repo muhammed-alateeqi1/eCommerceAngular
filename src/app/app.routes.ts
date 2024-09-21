@@ -9,6 +9,8 @@ import { RegisterComponent } from './layout/pages/register/register.component';
 import { CategoriesComponent } from './layout/pages/categories/categories.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { ForgetpasswordComponent } from './layout/additions/forgetpassword/forgetpassword.component';
+import { SendcodeformComponent } from './layout/pages/sendcodeform/sendcodeform.component';
+import { RepasswordComponent } from './layout/additions/repassword/repassword.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'home' , pathMatch:'full'},
@@ -20,6 +22,8 @@ export const routes: Routes = [
     {path:'login',component:LoginComponent},
     {path:'register',component:RegisterComponent},
     {path:'forgetpassword',component:ForgetpasswordComponent},
+    {path:'sendcode',component:SendcodeformComponent},
+    {path:'repassword',component:RepasswordComponent},
     {path:'**',component:NotfoundComponent}, //wildCard (wrong path)
 ];
     

@@ -50,9 +50,7 @@ export class RegisterComponent {
           this.errMsg = err.error.message;
         }
       });
-    }
-    console.log(this.registerForm.value);
-    console.log("test");
-    
+    } 
+    console.log(this.registerForm.value);    
   }
 }

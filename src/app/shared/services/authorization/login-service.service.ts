@@ -25,7 +25,7 @@ export class loginService {
 
   }
   signIn(data:loginData): Observable<SuccessSignin | FieldSignin> {
-    return this._HttpClient.post<SuccessSignin | FieldSignin>(`${Environment.baseUrl}/api/v1/auth/signin`, data);
+    return this._HttpClient.post<SuccessSignin | FieldSignin>(`${Environment.baseUrl}api/v1/auth/signin`, data);
   }
 
   decodeUserData(){

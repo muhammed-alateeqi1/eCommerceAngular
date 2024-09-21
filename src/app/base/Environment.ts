@@ -1,5 +1,5 @@
   
  
 export enum Environment {
-    baseUrl = 'https://ecommerce.routemisr.com'
+    baseUrl = 'https://ecommerce.routemisr.com/'
 }

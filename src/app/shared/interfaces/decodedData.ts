@@ -1,5 +1,4 @@
 export interface decodedData {
-
     exp:number;
     iat: number;
     id:string;
