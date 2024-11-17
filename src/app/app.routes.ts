@@ -11,6 +11,7 @@ import { authGuard } from './shared/guards/auth.guard';
 import { ForgetpasswordComponent } from './layout/additions/forgetpassword/forgetpassword.component';
 import { SendcodeformComponent } from './layout/pages/sendcodeform/sendcodeform.component';
 import { RepasswordComponent } from './layout/additions/repassword/repassword.component';
+import { ProductDetailsComponent } from './layout/additions/product-details/product-details.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'home' , pathMatch:'full'},
@@ -24,6 +25,7 @@ export const routes: Routes = [
     {path:'forgetpassword',component:ForgetpasswordComponent},
     {path:'sendcode',component:SendcodeformComponent},
     {path:'repassword',component:RepasswordComponent},
+    {path:'productdetails/:productId',component:ProductDetailsComponent, canActivate:[authGuard]},
     {path:'**',component:NotfoundComponent}, //wildCard (wrong path)
 ];
     

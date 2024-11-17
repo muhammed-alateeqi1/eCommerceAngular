@@ -3,6 +3,8 @@
 :root{
     --font-family: "Encode Sans Expanded", sans-serif ;
     --bg-color : #00AD18;
+    --rating-color:#e6b71c;
+
 }
 @tailwind base;
 @tailwind components;
@@ -12,7 +14,64 @@ body{
     font-family: var(--font-family);
    
 }
-
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
 .bg-main{
     background-color: var(--bg-color);
 }
+.text-main{
+    color: #00AD18;
+}
+.font-sm{
+    font-size: 12px;
+}
+.rating-color{
+    color: var(--rating-color);
+}
+.product{
+    transition: all ease .3s;
+}
+.product:hover{
+    border-radius: 5px;
+    border: solid 1px #00AD18;
+    box-shadow: 0 0 5px #00AD18;
+
+}
+.product button{
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all ease .3s;
+}
+.product:hover button{
+    transform: translateY(0%);
+    opacity: 1;
+}
+.center{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #535050;
+    border-bottom-color: #3bff0a;
+    border-radius: 50%; 
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+      

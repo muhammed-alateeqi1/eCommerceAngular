@@ -1,2 +1,32 @@
-<p class="border-l-orange-500">home works!</p>
+
+<app-homeslider></app-homeslider>
+<div class="container mx-auto ">
+<h2 class="text-xl font-medium my-5 bg-main w-fit rounded text-white px-2">Show Popular Categories</h2>
+<app-categoryslider></app-categoryslider>
+</div>
+@if(isLoading){
+    <div class="h-screen center">
+        <span class="loader"></span>
+    </div>
+}@else {
+    <div class="container mx-auto">
+        <div class="flex flex-wrap">
+            @for(product of productList; track $index){
+                <div class="md:w-2/12 p-3">
+                    <div class="product p-2 cursor-pointer" [routerLink]="['/productdetails' , product._id]">
+                        <img [src]="product.imageCover" class="w-full" alt="">
+                        <span class="text-main font-sm">{{product.category.name}}</span>
+                        <h3 class="my-3 text-lg font-medium">{{product.title.split(' ').splice(0,2).join(' ')}}</h3>
+                        <div class="flex flex-wrap justify-between">
+                            <span>{{product.price}}EGP</span>
+                            <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
+                        </div>
+                        <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
 
