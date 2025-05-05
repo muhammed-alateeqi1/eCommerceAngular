@@ -20,9 +20,9 @@ constructor(private _ProductService:ProductService , private _ActivatedRoute:Act
   getProductById(){
     let id!:string;
     this._ActivatedRoute.params.subscribe({
-      next : p=>{
-        id = p['productId'];
-        console.log(p['productId']);
+      next : product=>{
+        id = product['productId'];
+        console.log(product['productId']);
       },
       error: err =>{
         console.log(err);

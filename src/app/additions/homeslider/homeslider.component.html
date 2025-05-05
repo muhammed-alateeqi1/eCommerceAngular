@@ -1,20 +1,30 @@
-<div class="container mx-auto mt-5">
-    <div class="flex flex-wrap">
-        <div class="md:w-9/12">
-            <owl-carousel-o [options]="customOptions">
-                <ng-template carouselSlide>
-                    <img src="assets/images/slider-image-1.jpeg" class="w-full" alt="">
-                </ng-template>
-                <ng-template carouselSlide>
-                    <img src="assets/images/slider-image-2.jpeg" class="w-full" alt="">
-                </ng-template>
-                <ng-template carouselSlide>
-                    <img src="assets/images/slider-image-3.jpeg" class="w-full" alt="">
-                </ng-template>
-            </owl-carousel-o>
+<div class="container mx-auto px-4 mt-5">
+    <div class="flex flex-col md:flex-row gap-4">
+      <!-- Main carousel - full width on mobile, 9/12 on medium screens -->
+      <div class="w-full md:w-9/12">
+        <owl-carousel-o [options]="customOptions">
+          <ng-template carouselSlide>
+            <img src="assets/images/slider-image-1.jpeg" class="w-full h-auto object-cover rounded-lg shadow-md" alt="Slider image 1">
+          </ng-template>
+          <ng-template carouselSlide>
+            <img src="assets/images/slider-image-2.jpeg" class="w-full h-auto object-cover rounded-lg shadow-md" alt="Slider image 3">
+          </ng-template>
+          <ng-template carouselSlide>
+            <img src="assets/images/slider-image-3.jpeg" class="w-full h-auto object-cover rounded-lg shadow-md" alt="Slider image 3">
+          </ng-template>
+        </owl-carousel-o>
+      </div>
+      
+      <!-- Side images - horizontal row on mobile, vertical column on medium screens -->
+      <div class="w-full md:w-3/12 side-slider">
+        <div class="flex md:flex-col gap-4 ">
+          <div class="w-1/2 md:w-full">
+            <img src="assets/images/slider-image-1.jpeg" class="w-full h-auto object-cover rounded-lg shadow-md" alt="Side image 1">
+          </div>
+          <div class="w-1/2 md:w-full">
+            <img src="assets/images/slider-image-2.jpeg" class="w-full h-auto object-cover rounded-lg shadow-md mt-0 md:mt-4" alt="Side image 2">
+          </div>
         </div>
-        <div class="md:w-3/12 side-slider">
-            <img src="assets/images/slider-image-1.jpeg" class="w-full" alt="">
-            <img src="assets/images/slider-image-2.jpeg" class="w-full" alt="">
-        </div>
+      </div>
     </div>
+  </div>

@@ -7,7 +7,7 @@
             <div class="md:w-9/12 xs:w-full p-2 xs:text-center">
                 <h1 class="text-lg font-medium">{{product.title}}</h1>
                 <p class="text-sm text-gray-400 my-3">{{product.description}}</p>
-                <span class="text-xs">Category</span>
+                <span class="text-xs">{{product.category.name}}</span>
                 <div class="flex flex-wrap justify-between my-3">
                     <span>{{product.price}}EGP</span>
                     <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>

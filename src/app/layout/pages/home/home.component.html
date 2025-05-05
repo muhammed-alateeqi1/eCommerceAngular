@@ -1,32 +1,57 @@
-
 <app-homeslider></app-homeslider>
-<div class="container mx-auto ">
-<h2 class="text-xl font-medium my-5 bg-main w-fit rounded text-white px-2">Show Popular Categories</h2>
-<app-categoryslider></app-categoryslider>
+<div class="container mx-auto">
+    <h2 class="font-medium my-5 bg-main w-fit rounded ml-6 text-white p-1 text-xs sm:text-sm">Show Popular Categories</h2>
+    <app-categoryslider></app-categoryslider>
 </div>
 @if(isLoading){
-    <div class="h-screen center">
-        <span class="loader"></span>
-    </div>
+<div class="h-screen center">
+    <span class="loader"></span>
+</div>
 }@else {
-    <div class="container mx-auto">
-        <div class="flex flex-wrap">
-            @for(product of productList; track $index){
-                <div class="md:w-2/12 p-3">
-                    <div class="product p-2 cursor-pointer" [routerLink]="['/productdetails' , product._id]">
-                        <img [src]="product.imageCover" class="w-full" alt="">
-                        <span class="text-main font-sm">{{product.category.name}}</span>
-                        <h3 class="my-3 text-lg font-medium">{{product.title.split(' ').splice(0,2).join(' ')}}</h3>
-                        <div class="flex flex-wrap justify-between">
-                            <span>{{product.price}}EGP</span>
-                            <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
-                        </div>
-                        <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
-                    </div>
+<div class="container mx-auto">
+    <div class="w-1/2 flex justify-center items-center my-5 mx-auto">
+
+        
+            <label class="sr-only">Search</label>
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2" />
+                    </svg>
                 </div>
-            }
-        </div>
+                <input [(ngModel)] = "userWord" type="text" 
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    placeholder="Search branch name..."  />
+                </div>
+                <button type="submit"
+                class="p-2.5 ms-2 text-sm font-medium text-white bg-green-500 rounded-lg border hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+            <span class="sr-only">Search</span>
+        </button>
+
+
     </div>
+    <div class="flex flex-wrap">
+        @for(product of productList | search : userWord ; track $index){
+        <div class="md:w-2/12 p-3">
+            <div class="product p-2 cursor-pointer" [routerLink]="['/productdetails' , product._id]">
+                <img [src]="product.imageCover" class="w-full" alt="">
+                <span class="text-main font-sm">{{product.category.name | lowercase }}</span>
+                <h3 class="my-3 text-lg font-medium">{{product.title.split(' ').splice(0,2).join(' ')| onsale}}</h3>
+                <div class="flex flex-wrap justify-between">
+                    <span>{{product.price | currency : 'e£' }}</span>
+                    <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
+                </div>
+                <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
+            </div>
+        </div>
+        }
+    </div>
+</div>
 }
-
-

@@ -11,22 +11,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './categoryslider.component.css'
 })
 export class CategorysliderComponent implements OnInit {
-  isLoading:boolean = false;
+  isLoading: boolean = false;
   customOptions: OwlOptions = {
+    autoplay: true,
+    autoplayTimeout : 3000,
+    autoplayHoverPause:true,
     loop: true,
     mouseDrag: true,
     touchDrag: true,
-    pullDrag: false,
-    dots: false,
+    pullDrag: true,
+    dots: true,
     navSpeed: 700,
     navText: ['', ''],
     responsive: {
       0: {
-        items: 7
+        items: 2
       },
-
+      400: {
+        items: 3
+      },
+      576: {
+        items: 4
+      },
+      768: {
+        items: 5
+      },
+      992: {
+        items: 6
+      },
+      1200: {
+        items: 7
+      }
     },
-    nav: true
   }
   categoryList!: Category[]
   constructor(private _CategoryService: CategoryService) { }
@@ -34,6 +50,7 @@ export class CategorysliderComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCategories();
   }
+  
   getAllCategories() {
     this.isLoading = true;
     this._CategoryService.getAllCategories().subscribe({
@@ -45,9 +62,7 @@ export class CategorysliderComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         console.log(err);
-
       }
     })
   }
-
 }
