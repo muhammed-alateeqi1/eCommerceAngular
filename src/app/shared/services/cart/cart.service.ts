@@ -20,4 +20,10 @@ userTokenHeader ={
   getLoggedUserCart():Observable<LoggedUserCart>{
     return this._HttpClient.get<LoggedUserCart>(`${Environment.baseUrl}api/v1/cart`, { headers: this.userTokenHeader });
   }
+  updateproductQuantity(productId:string , count:string):Observable<LoggedUserCart>{
+    return this._HttpClient.put<LoggedUserCart>(`${Environment.baseUrl}api/v1/cart/${productId}`,{count:count}, { headers: this.userTokenHeader });
+  }
+  removeCartProduct(productId:string):Observable<LoggedUserCart>{
+    return this._HttpClient.delete<LoggedUserCart>(`${Environment.baseUrl}api/v1/cart/${productId}`, { headers: this.userTokenHeader });
+  }
 }

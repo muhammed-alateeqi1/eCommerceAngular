@@ -1,23 +1,23 @@
 
 @if(data){
-<div class="container mx-auto">
- <h1 class="text-xl font-semibold my-3">Shop Cart</h1>
- <p class="text-main mb-3 font-semibold">Total Cart Price : {{data.totalCartPrice}}</p>
-
+<div class="container mx-auto m-10">
+    <h1 class="text-xl font-semibold my-3">Shop Cart</h1>
+    <p class="text-main mb-3 font-semibold">Total Cart Price : {{data.totalCartPrice}}</p>
+    
  @for(item of data.products ;track $index){
  <div class="row items-center bg-gray-100 border-b  border-white rounded-sm">
     <div class="md:w-1/12 p-3">
         <img src="{{item.product.imageCover}}" class="w-full object-cover rounded-md" alt="">
     </div>
-    <div class="md:w-10/12 p-3">
+    <div class="md:w-9/12 p-3">
         <h2 class="text-lg font-medium mb-3">{{item.product.title}}</h2>
         <p class="text-main mb-3">Price : {{item.price}} </p>
-        <span class="cursor-pointer">Remove <i class="fa fa-trash text-main"></i></span>
+        <span class="cursor-pointer" (click)="deleteProductFromCart(item.product._id)">Remove <i class="fa fa-trash text-main"></i></span>
     </div>
-    <div class="md:w-1/12 p-3">
-        <button class="text-white bg-green-500 rounded-md p-2">+</button>
+    <div class="md:w-2/12 p-3">
+        <button (click)="updateProductCartCount(item.product._id , item.count = item.count+1)" class="text-white bg-green-500 rounded-md p-2">+</button>
         <span class="p-2">{{item.count}}</span>
-        <button class="text-white bg-red-400 rounded-md p-2">-</button>
+        <button (click)="updateProductCartCount(item.product._id , item.count = item.count-1)" class="text-white bg-red-400 rounded-md p-2">-</button>
     </div>
 </div>
 }
