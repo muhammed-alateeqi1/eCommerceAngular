@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { loginService } from '../../../shared/services/authorization/login-service.service';
 import { LogoutService } from '../../../shared/services/authorization/logout.service';
 import { FlowbiteService } from '../../../shared/services/flowbite/flowbite.service';

@@ -22,10 +22,10 @@ constructor(private _ProductService:ProductService , private _ActivatedRoute:Act
     this._ActivatedRoute.params.subscribe({
       next : product=>{
         id = product['productId'];
-        console.log(product['productId']);
+        // console.log(product['productId']);
       },
       error: err =>{
-        console.log(err);
+        console.log(err.message);
       }
     })
     this._ProductService.getProductById(id).subscribe({
