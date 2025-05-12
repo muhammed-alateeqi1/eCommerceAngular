@@ -10,7 +10,7 @@ import { Data } from '../../../shared/interfaces/getLoggedUserCart';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  data !: Data
+  data !: Data;
   constructor(private _CartService: CartService) { }
   ngOnInit(): void {
     if (typeof localStorage != "undefined") {
