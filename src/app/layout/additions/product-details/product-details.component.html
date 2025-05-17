@@ -1,19 +1,33 @@
 @if(product){
-    <div class="container mx-auto my-10">
-        <div class="row items-center p-4">
-            <div class="md:w-3/12 p-2">
-                <img  [src]="product.imageCover" class="w-full" alt="product dtails">
+@if(isLoading){
+<div class="h-screen center">
+    <span class="loader"></span>
+</div>
+}@else{
+<div class="container mx-auto my-10">
+    <div class="row items-center p-4">
+        <div class="md:w-3/12 p-2">
+            <!-- <img  class="w-full" alt="product dtails"> -->
+            <owl-carousel-o [options]="customOptions">
+                @for(image of product.images; track $index){
+                <ng-template carouselSlide>
+                    <img [src]="image" class="w-full h-auto object-cover rounded-lg shadow-md" alt="{{product.title}}">
+                </ng-template>
+                }
+
+            </owl-carousel-o>
+        </div>
+        <div class="md:w-9/12 xs:w-full p-2 xs:text-center">
+            <h1 class="text-lg font-medium">{{product.title}}</h1>
+            <p class="text-sm text-gray-400 my-3">{{product.description}}</p>
+            <span class="text-xs">{{product.category.name}}</span>
+            <div class="flex flex-wrap justify-between my-3">
+                <span>{{product.price}}EGP</span>
+                <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
             </div>
-            <div class="md:w-9/12 xs:w-full p-2 xs:text-center">
-                <h1 class="text-lg font-medium">{{product.title}}</h1>
-                <p class="text-sm text-gray-400 my-3">{{product.description}}</p>
-                <span class="text-xs">{{product.category.name}}</span>
-                <div class="flex flex-wrap justify-between my-3">
-                    <span>{{product.price}}EGP</span>
-                    <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
-                </div>
-                <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
-            </div>
+            <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
         </div>
     </div>
+</div>
+}
 }
