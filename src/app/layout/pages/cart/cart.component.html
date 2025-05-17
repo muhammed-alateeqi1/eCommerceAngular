@@ -1,26 +1,65 @@
 
-@if(data){
-<div class="container mx-auto m-10">
-    <h1 class="text-xl font-semibold my-3">Shop Cart</h1>
-    <p class="text-main mb-3 font-semibold">Total Cart Price : {{data.totalCartPrice}}</p>
-    
- @for(item of data.products ;track $index){
- <div class="row items-center bg-gray-100 border-b  border-white rounded-sm">
-    <div class="md:w-1/12 p-3">
-        <img src="{{item.product.imageCover}}" class="w-full object-cover rounded-md" alt="">
-    </div>
-    <div class="md:w-9/12 p-3">
-        <h2 class="text-lg font-medium mb-3">{{item.product.title}}</h2>
-        <p class="text-main mb-3">Price : {{item.price}} </p>
-        <span class="cursor-pointer" (click)="deleteProductFromCart(item.product._id)">Remove <i class="fa fa-trash text-main"></i></span>
-    </div>
-    <div class="md:w-2/12 p-3">
-        <button (click)="updateProductCartCount(item.product._id , item.count = item.count+1)" class="text-white bg-green-500 rounded-md p-2">+</button>
-        <span class="p-2">{{item.count}}</span>
-        <button (click)="updateProductCartCount(item.product._id , item.count = item.count-1)" class="text-white bg-red-400 rounded-md p-2">-</button>
-    </div>
+@if(isLoading){
+<div class="h-screen center">
+    <span class="loader"></span>
 </div>
-}
-</div>
-}
+}@else{
 
+
+@if(data){
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-xl md:text-2xl font-semibold my-3">Shop Cart</h1>
+    <p class="text-main mb-5 font-semibold">Total Cart Price: {{data.totalCartPrice}} EGP</p>
+
+    @for(item of data.products; track $index){
+    <div class="flex flex-col sm:flex-row items-center justify-between bg-gray-50 shadow-sm rounded-lg mb-4 overflow-hidden">
+        <!-- Product Image -->
+        <div class="w-full sm:w-2/12 md:w-1/12">
+            <img src="{{item.product.imageCover}}" class="w-full h-32 sm:h-24 object-cover" alt="{{item.product.title}}">
+        </div>
+        <!-- Product Details -->
+        <div class="w-full sm:w-6/12 md:w-8/12 p-4">
+            <h2 class="text-lg font-medium mb-2">{{item.product.title}}</h2>
+            <p class="text-main mb-3">Price: {{item.price}} EGP</p>
+            <button 
+                class="flex items-center text-sm text-gray-600 hover:text-red-500 transition-colors" 
+                (click)="deleteProductFromCart(item.product._id)">
+                <span>Remove</span>
+                <i class="fa fa-trash text-main ml-2"></i>
+            </button>
+        </div>
+        <!-- Quantity Controls -->
+        <div class="w-full sm:w-4/12 md:w-3/12 p-4 flex items-center justify-center">
+            <div class="flex items-center justify-between border rounded-lg overflow-hidden">
+                <button 
+                    (click)="updateProductCartCount(item.product._id, item.count = item.count-1)" 
+                    class="text-white bg-red-400 hover:bg-red-500 px-4 py-2 focus:outline-none transition-colors">
+                    −
+                </button>
+                <span class="px-4 py-2 text-center min-w-12">{{item.count}}</span>
+                <button 
+                    (click)="updateProductCartCount(item.product._id, item.count = item.count+1)" 
+                    class="text-white bg-green-500 hover:bg-green-600 px-4 py-2 focus:outline-none transition-colors">
+                    +
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+    
+    @if(data.products.length === 0){
+    <div class="text-center flex justify-center items-center py-8">
+        <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 font-medium text-yellow-800 ring-1 text-2xl ring-yellow-600/20 ring-inset">Your cart is empty</span>
+    </div>
+    }
+    
+    @if(data.products.length > 0){
+    <div class="mt-6 flex justify-end">
+        <button class="bg-main text-white py-2 px-6 rounded-lg hover:opacity-90 transition-opacity">
+            Proceed to Checkout
+        </button>
+    </div>
+    }
+</div>
+}
+}

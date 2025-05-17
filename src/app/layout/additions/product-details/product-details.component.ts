@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
 import { ActivatedRoute } from '@angular/router';
-import { CarouselModule , OwlOptions } from 'ngx-owl-carousel-o';
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { CartService } from '../../../shared/services/cart/cart.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -12,7 +14,7 @@ import { CarouselModule , OwlOptions } from 'ngx-owl-carousel-o';
   styleUrl: './product-details.component.css'
 })
 export class ProductDetailsComponent implements OnInit {
-    customOptions: OwlOptions = {
+  customOptions: OwlOptions = {
     loop: false,
     mouseDrag: true,
     touchDrag: true,
@@ -30,7 +32,7 @@ export class ProductDetailsComponent implements OnInit {
   }
   isLoading: boolean = false;
   product!: product;
-  constructor(private _ProductService: ProductService, private _ActivatedRoute: ActivatedRoute) { }
+  constructor(private _ProductService: ProductService, private _ActivatedRoute: ActivatedRoute, private _CartService: CartService , private _Toster:ToastrService) { }
 
   ngOnInit(): void {
     this.getProductById();
@@ -52,6 +54,23 @@ export class ProductDetailsComponent implements OnInit {
         this.product = res.data;
         console.log(res.data);
         this.isLoading = false;
+      }
+    })
+  }
+  alerResponse(resMessage: string) {
+    this._Toster.success(resMessage, '', {
+      timeOut: 3000,
+      progressBar: true,
+      closeButton: true,
+
+    })
+  }
+  addProductToCartFromProductDetails() {
+    this._CartService.addProductToCart(this.product._id).subscribe({
+      next: response => {
+        this.alerResponse(response.message);
+      },error : err=>{
+        this.alerResponse(err.message);
       }
     })
   }

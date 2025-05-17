@@ -1,33 +1,37 @@
-@if(product){
 @if(isLoading){
-<div class="h-screen center">
-    <span class="loader"></span>
-</div>
-}@else{
-<div class="container mx-auto my-10">
-    <div class="row items-center p-4">
-        <div class="md:w-3/12 p-2">
-            <!-- <img  class="w-full" alt="product dtails"> -->
-            <owl-carousel-o [options]="customOptions">
-                @for(image of product.images; track $index){
-                <ng-template carouselSlide>
-                    <img [src]="image" class="w-full h-auto object-cover rounded-lg shadow-md" alt="{{product.title}}">
-                </ng-template>
-                }
-
-            </owl-carousel-o>
-        </div>
-        <div class="md:w-9/12 xs:w-full p-2 xs:text-center">
-            <h1 class="text-lg font-medium">{{product.title}}</h1>
-            <p class="text-sm text-gray-400 my-3">{{product.description}}</p>
-            <span class="text-xs">{{product.category.name}}</span>
-            <div class="flex flex-wrap justify-between my-3">
-                <span>{{product.price}}EGP</span>
-                <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
-            </div>
-            <button class="my-2  p-2 text-white w-full   bg-main rounded">Add To Cart</button>
-        </div>
+    <div class="h-screen flex items-center justify-center">
+        <span class="loader"></span>
     </div>
-</div>
-}
+}@else{
+    @if(product){
+        <div class="container mx-auto my-5 px-4">
+            <div class="flex flex-col md:flex-row md:items-start">
+                <div class="w-full md:w-5/12 lg:w-4/12 mb-6 md:mb-0 md:pr-4">
+                    <owl-carousel-o [options]="customOptions">
+                        @for(image of product.images; track $index){
+                            <ng-template carouselSlide>
+                                <img [src]="image" class="w-full h-auto object-cover rounded-lg shadow-md" alt="{{product.title}}">
+                            </ng-template>
+                        }
+                    </owl-carousel-o>
+                </div>
+                <div class="w-full md:w-7/12 lg:w-8/12 px-0 md:px-4">
+                    <h1 class="text-xl md:text-2xl font-medium mb-2">{{product.title}}</h1>
+                    <p class="text-sm text-gray-600 my-3">{{product.description}}</p>
+                    <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded mb-4">{{product.category.name}}</span>
+                    
+                    <div class="flex justify-between items-center my-4 border-t border-b py-3">
+                        <span class="text-lg font-semibold">{{product.price}} EGP</span>
+                        <span class="bg-gray-100 px-2 py-1 rounded text-sm">
+                            <i class="fa fa-star rating-color mr-1"></i>{{product.ratingsAverage}}
+                        </span>
+                    </div>
+                    
+                    <button (click)="addProductToCartFromProductDetails()" class="my-3 py-3 text-white w-full bg-main rounded-lg hover:opacity-90 transition-opacity">
+                        Add To Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
 }

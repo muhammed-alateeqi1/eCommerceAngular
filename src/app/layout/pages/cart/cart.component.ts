@@ -12,6 +12,7 @@ import { log } from 'console';
 })
 export class CartComponent implements OnInit {
   data !: Data;
+  isLoading: boolean = false;
   constructor(private _CartService: CartService) { }
   ngOnInit(): void {
     if (typeof localStorage != "undefined") {
@@ -20,16 +21,18 @@ export class CartComponent implements OnInit {
     this.getLoggedUserCart()
   }
   getLoggedUserCart() {
+    this.isLoading = true;
     this._CartService.getLoggedUserCart().subscribe({
       next: res => {
         this.data = res.data;
+        this.isLoading = false;
         // console.log(res.data);
       }
     })
   }
   updateProductCartCount(productId: string, count: number) {
     if (count <= 0) {
-     this.deleteProductFromCart(productId)
+      this.deleteProductFromCart(productId)
     } else {
       this._CartService.updateproductQuantity(productId, count.toString()).subscribe({
         next: res => {
@@ -42,12 +45,12 @@ export class CartComponent implements OnInit {
       })
     }
   }
-  deleteProductFromCart(productId:string){
+  deleteProductFromCart(productId: string) {
     this._CartService.removeCartProduct(productId).subscribe({
-     next : res =>{
-      this.data = res.data;
+      next: res => {
+        this.data = res.data;
         // console.log(res);
-        
+
       }
     })
   }

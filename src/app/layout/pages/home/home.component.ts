@@ -11,20 +11,21 @@ import { SearchPipe } from "../../../shared/pipes/search.pipe";
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
+import { FooterComponent } from "../../additions/footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CategorysliderComponent,FormsModule, HomesliderComponent, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe], // Add necessary Angular modules here if needed
+  imports: [CategorysliderComponent, FormsModule, HomesliderComponent, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe, FooterComponent], // Add necessary Angular modules here if needed
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'] // Corrected from styleUrl to styleUrls
 })
 export class HomeComponent implements OnInit {
-  userWord:string = '';
-  
-  productList !:product[]
+  userWord: string = '';
+
+  productList !: product[]
   isLoading: boolean = false;
-  constructor(private _ProductService: ProductService , private _CartService:CartService , private _Toster:ToastrService) { }
+  constructor(private _ProductService: ProductService, private _CartService: CartService, private _Toster: ToastrService) { }
   ngOnInit(): void {
     if (typeof localStorage !== "undefined") {
       localStorage.setItem('currentPage', '/home');
@@ -34,31 +35,32 @@ export class HomeComponent implements OnInit {
   Products() {
     this.isLoading = true;
     this._ProductService.getAllProducts().subscribe({
-      next :(res) =>{
+      next: (res) => {
         this.productList = res.data;
         this.isLoading = false;
 
       },
-      error : (err) =>{
+      error: (err) => {
         this.isLoading = false;
         console.log(err);
       }
     })
   }
-  showSuccess(resMessage: string){
-    this._Toster.success(resMessage , '' , {
-      timeOut : 3000,
-      progressBar  : true,
-      closeButton : true,
-      
+  alertResponse(resMessage: string) {
+    this._Toster.success(resMessage, '', {
+      timeOut: 3000,
+      progressBar: true,
+      closeButton: true,
+
     })
   }
-  addProductToCart(productId:string){
+  addProductToCart(productId: string) {
     this._CartService.addProductToCart(productId).subscribe({
-      next : response => {
+      next: response => {
         console.log(response.message);
-        let resMessage = response.message
-        this.showSuccess(resMessage);
+        this.alertResponse(response.message);
+      }, error: err=>{
+      this.alertResponse(err.message);
       }
     })
   }

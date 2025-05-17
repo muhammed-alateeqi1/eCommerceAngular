@@ -1,42 +1,57 @@
-<footer class="bg-gray-100 py-6">
-    <div class="container mx-auto px-4">
-      
-      <!-- App Download Section -->
-      <div class="text-center mb-6">
-        <h2 class="text-2xl md:text-3xl font-bold">Get the freshCart app</h2>
-        <p class="text-sm md:text-md mt-2 text-gray-500">We will send you a link, open it on your phone to download the app</p>
-      </div>
-  
-      <!-- Form Section -->
-      <form class="flex flex-col md:flex-row items-center justify-between mb-6">
-        <input type="text" class="w-full md:w-3/4 lg:w-3/4 rounded p-2 border border-gray-300" placeholder="Enter your phone number">
-        <button class="mt-3 md:mt-0 md:ml-4 w-1/2 md:w-auto lg:w-1/4 bg-main px-4 py-2 text-white rounded"><span class="text-sm">Share App link</span> </button>
-      </form>
-  
-      <hr class="border-gray-300 my-5">
-  
-      <!-- Payment Partners & App Links Section -->
-      <div class=" flex flex-col lg:flex-row justify-between items-center">
-        
-        <!-- Payment Partners -->
-        <div class="payment w-full lg:w-1/2 flex items-center justify-center lg:justify-start mb-6 lg:mb-0">
-          <span class="text-sm sm:text-xs font-semibold mr-2">Payment Partners</span>
-          <img loading="lazy" src="assets/images/amazon-pay.png" alt="Amazon Pay" class="h-4 mx-1">
-          <img loading="lazy" src="assets/images/American-Express-Color.png" alt="American Express" class="h-6 mx-1">
-          <img loading="lazy" src="assets/images/mastercard.webp" alt="MasterCard" class="h-6 mx-1">
-          <img loading="lazy" src="assets/images/paypal.png" alt="PayPal" class="h-6 mx-1">
-          <img loading="lazy" src="assets/images/png-transparent-visa-logo-credit-card-visa-logo-payment-visa-blue-text-trademark-thumbnail-removebg-preview.png" alt="Visa" class="h-6 mx-1">
-        </div>
-  
-        <!-- App Download Links -->
-        <div class="apps w-full lg:w-1/2 flex items-center justify-center lg:justify-end">
-          <span class="text-sm font-semibold mr-2">Get deliveries with FreshCart</span>
-          <img loading="lazy" src="assets/images/get-apple-store.png" alt="App Store" class="h-8 mx-2">
-          <img loading="lazy" src="assets/images/get-google-play.png" alt="Google Play" class="h-8 mx-2">
-        </div>
-  
-      </div>
-  
+<footer class="bg-gray-100 py-8">
+  <div class="container mx-auto px-4">
+    
+    <!-- App Download Section -->
+    <div class="text-center mb-8">
+      <h2 class="text-xl md:text-2xl font-bold">Get the freshCart app</h2>
+      <p class="text-sm mt-2 text-gray-600">We will send you a link, open it on your phone to download the app</p>
     </div>
-  </footer>
-  
+
+    <!-- Form Section -->
+    <div class="max-w-2xl mx-auto mb-8">
+      <form class="flex flex-col sm:flex-row items-center gap-3">
+        <input 
+          type="text" 
+          class="w-full rounded py-2 px-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-main focus:border-main" 
+          placeholder="Enter your phone number"
+        >
+        <button class="w-full sm:w-auto bg-main px-6 py-2 text-white rounded hover:opacity-90 transition-opacity whitespace-nowrap">
+          Share App link
+        </button>
+      </form>
+    </div>
+
+    <hr class="border-gray-300 my-6">
+
+    <!-- Payment Partners & App Links Section -->
+    <div class="flex flex-col md:flex-row gap-6">
+      
+      <!-- Payment Partners -->
+      <div class="w-full md:w-1/2">
+        <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2">
+          <span class="text-sm font-semibold mb-2 sm:mb-0">Payment Partners</span>
+          <div class="flex flex-wrap justify-center gap-3">
+            <img loading="lazy" src="assets/images/amazon-pay.png" alt="Amazon Pay" class="h-5">
+            <img loading="lazy" src="assets/images/American-Express-Color.png" alt="American Express" class="h-6">
+            <img loading="lazy" src="assets/images/mastercard.webp" alt="MasterCard" class="h-6">
+            <img loading="lazy" src="assets/images/paypal.png" alt="PayPal" class="h-6">
+            <img loading="lazy" src="assets/images/png-transparent-visa-logo-credit-card-visa-logo-payment-visa-blue-text-trademark-thumbnail-removebg-preview.png" alt="Visa" class="h-6">
+          </div>
+        </div>
+      </div>
+      
+      <!-- App Download Links -->
+      <div class="w-full md:w-1/2">
+        <div class="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-3">
+          <span class="text-sm font-semibold mb-2 sm:mb-0">Get deliveries with FreshCart</span>
+          <div class="flex gap-3">
+            <img loading="lazy" src="assets/images/get-apple-store.png" alt="App Store" class="h-8">
+            <img loading="lazy" src="assets/images/get-google-play.png" alt="Google Play" class="h-8">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+</footer>
