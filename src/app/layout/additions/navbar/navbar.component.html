@@ -44,25 +44,25 @@
     <div class="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul
         class="mx-2 font-medium flex items-center flex-col p-4 md:p-1 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-3 rtl:space-x-reverse md:mt-1  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li class="shopping-icon">
-          <a routerLink="cart" class="text-main text-xl">
-            🛒
-            @if(cartCount > 0){
-              <span class="shopping-counter">{{cartCount}}</span>
-            }
-          </a>
-        </li>
         @if(isLogin == false){
-        <li>
-          <a routerLink="login" routerLinkActive="bg-main text-white"
+          <li>
+            <a routerLink="login" routerLinkActive="bg-main text-white"
             class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
-        </li>
-        <li>
-          <a routerLink="register" routerLinkActive="bg-main text-white"
+          </li>
+          <li>
+            <a routerLink="register" routerLinkActive="bg-main text-white"
             class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
-        </li>
+          </li>
         }@else {
-        <li>
+          <li class="shopping-icon">
+            <a routerLink="cart" class="text-main text-xl">
+              🛒
+              @if(cartCount > 0){
+                <span class="shopping-counter">{{cartCount}}</span>
+              }
+            </a>
+          </li>
+          <li>
           <a (click)="_LogoutService.logOut()"
             class="cursor-pointer block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
         </li>
