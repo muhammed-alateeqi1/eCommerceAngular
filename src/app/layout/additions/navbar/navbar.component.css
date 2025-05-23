@@ -1,3 +1,23 @@
 .cursor-pointer{
     cursor: pointer;
 }
+.shopping-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.shopping-counter {
+  position: absolute;
+  top: -9px;
+  right: -10px;
+  background-color: mediumseagreen;
+  color: white;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(123, 249, 27, 0.5);
+}

@@ -11,12 +11,12 @@ import { SearchPipe } from "../../../shared/pipes/search.pipe";
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
-import { FooterComponent } from "../../additions/footer/footer.component";
+// import { FooterComponent } from "../../additions/footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CategorysliderComponent, FormsModule, HomesliderComponent, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe, FooterComponent], // Add necessary Angular modules here if needed
+  imports: [CategorysliderComponent, FormsModule, HomesliderComponent, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe], // Add necessary Angular modules here if needed
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'] // Corrected from styleUrl to styleUrls
 })

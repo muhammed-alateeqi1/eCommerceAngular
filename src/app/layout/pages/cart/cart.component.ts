@@ -1,7 +1,6 @@
 import { afterNextRender, Component, OnInit } from '@angular/core';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { Data } from '../../../shared/interfaces/getLoggedUserCart';
-import { log } from 'console';
 
 @Component({
   selector: 'app-cart',
@@ -12,12 +11,16 @@ import { log } from 'console';
 })
 export class CartComponent implements OnInit {
   data !: Data;
+  cartItems: any[] = [];
   isLoading: boolean = false;
   constructor(private _CartService: CartService) { }
   ngOnInit(): void {
     if (typeof localStorage != "undefined") {
       localStorage.setItem('currentPage', '/cart')
     }
+    this._CartService.cartItems$.subscribe(items => {
+    this.cartItems = items;
+  });
     this.getLoggedUserCart()
   }
   getLoggedUserCart() {
@@ -50,8 +53,20 @@ export class CartComponent implements OnInit {
       next: res => {
         this.data = res.data;
         // console.log(res);
-
       }
     })
   }
+clearCartPage() {
+  this._CartService.clearCartFromServer().subscribe({
+    next: () => {
+      this._CartService.clearLocalCart();
+      this._CartService.getLoggedUserCart().subscribe(res => {
+        this.data = res.data; 
+      });
+    },
+    error: (err) => {
+      console.error('Error clearing cart from server:', err);
+    }
+  });
+}
 }
