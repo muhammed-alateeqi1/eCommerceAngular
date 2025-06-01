@@ -18,3 +18,8 @@ export interface rePasswordData extends email{
         token:any;
         newPassword:string;
 }
+export interface shippingAdress{
+    details:string;
+    phone:string;
+    city:string;
+}

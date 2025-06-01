@@ -1,0 +1,69 @@
+<div class="flex justify-center items-center flex-col min-h-screen p-4 sm:p-6">
+    <h3 class="my-10 text-green-500 text-3xl">Shipping Address</h3>
+    <form [formGroup]="shippingAdressForm" (ngSubmit)="submitShippingAdressForm() "
+        class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+        <div class="relative z-0 w-full mb-6 sm:mb-7 group">
+            <input formControlName="details" type="text" name="floating_first_name" id="floating_first_name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+                
+                @if(shippingAdressForm.get('details')?.errors && shippingAdressForm.get('details')?.touched ){
+                    <div class="alertp-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                        <p class="p-2 text-center my-4">Please enter your details to complete the shipping proccess</p>
+                    </div>
+                }
+                <label for="floating_first_name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Details</label>
+        </div>
+        <div class="relative z-0 w-full mb-6 sm:mb-7 group">
+            <input formControlName="phone" type="text" name="floating_first_name" id="floating_first_name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+                @if(shippingAdressForm.get('phone')?.errors && shippingAdressForm.get('phone')?.touched){
+                     <div class="alertp-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                        <p class="p-2 text-center my-4">Please enter vaild phone number !</p>
+                    </div>
+                }
+            <label for="floating_first_name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
+        </div>
+        <div class="relative z-0 w-full mb-6 sm:mb-7 group">
+            <input formControlName="city" type="text" name="floating_first_name" id="floating_first_name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            @if(shippingAdressForm.get('city')?.errors && shippingAdressForm.get('city')?.touched){
+                 <div class="alertp-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                    @if(shippingAdressForm.get('city')?.errors?.['min']){
+                        <p class="p-2 text-center my-4">City name must be contains at least 3 characters !</p>
+                    }@else if(shippingAdressForm.get('city')?.errors?.['required']){
+                        <p class="p-2 text-center my-4">City name is required !</p>
+                    }
+                    </div>
+            }
+                <label for="floating_first_name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">City</label>
+        </div>
+        <button type="submit"
+            class="text-white bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm sm:text-base w-full px-5 py-3 sm:py-3.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-colors duration-300 mt-2">Submit</button>
+    </form>
+</div>
+ 
+
+<!-- <div class="flex justify-center items-center flex-col min-h-screen p-4 sm:p-6">
+    <h3 class="my-10 text-green-500 text-3xl">Shipping Address</h3>
+    <form [formGroup]="shippingAdressForm" (ngSubmit)="submitShippingAdressForm() "
+        class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+        <div class="relative z-0 w-full mb-6 sm:mb-7 group">
+            <input type="text" formControlName="details" placeholder="Enter Your Details" class="form-contorl w-full">
+                   @if(shippingAdressForm.get('details')?.errors?.['required'] && shippingAdressForm.get('details')?.touched){
+                    <div class="alertp-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                              <p class="p-2 text-center my-4">Please enter your details to complete the shipping proccess</p>
+                    </div>
+                }
+        </div>
+
+        <button type="submit"
+            class="text-white bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm sm:text-base w-full px-5 py-3 sm:py-3.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-colors duration-300 mt-2">Submit</button>
+    </form>
+</div> -->
+

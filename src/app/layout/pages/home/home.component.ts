@@ -22,7 +22,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class HomeComponent implements OnInit {
   userWord: string = '';
-
   productList !: product[]
   isLoading: boolean = false;
   constructor(private _ProductService: ProductService, private _CartService: CartService, private _Toster: ToastrService) { }

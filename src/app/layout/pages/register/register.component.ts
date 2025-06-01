@@ -33,7 +33,6 @@ export class RegisterComponent {
       return { mismatch: true };
     }
   }
-
   submitRegister() {
     if (this.registerForm.valid) {
       this.isLoading = true;
