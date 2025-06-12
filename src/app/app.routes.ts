@@ -13,6 +13,7 @@ import { SendcodeformComponent } from './layout/pages/sendcodeform/sendcodeform.
 import { RepasswordComponent } from './layout/additions/repassword/repassword.component';
 import { ProductDetailsComponent } from './layout/additions/product-details/product-details.component';
 import { ShippingAdressComponent } from './layout/additions/shipping-adress/shipping-adress.component';
+import { AllordersComponent } from './layout/additions/allorders/allorders.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,7 +27,8 @@ export const routes: Routes = [
     { path: 'forgetpassword', component: ForgetpasswordComponent },
     { path: 'sendcode', component: SendcodeformComponent },
     { path: 'repassword', component: RepasswordComponent },
-    { path: 'shippingaddress/:cartId', component: ShippingAdressComponent ,  canActivate: [authGuard] },
+    { path: 'allorders', component: AllordersComponent, canActivate: [authGuard] },
+    { path: 'shippingaddress/:cartId', component: ShippingAdressComponent},
     { path: 'productdetails/:productId', component: ProductDetailsComponent, canActivate: [authGuard] },
     { path: '**', component: NotfoundComponent }, //wildCard (wrong path)
 ];

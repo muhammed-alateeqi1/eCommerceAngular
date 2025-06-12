@@ -14,24 +14,29 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class loginService {
-   userData: BehaviorSubject<decodedData|null> = new BehaviorSubject<decodedData | null>(null) ;  
-  constructor(private _HttpClient: HttpClient , private _Router:Router) {
-    afterNextRender(()=>{ //works on browser only 
-      if(localStorage.getItem('userToken')){
+  userData: BehaviorSubject<decodedData | null> = new BehaviorSubject<decodedData | null>(null);
+  constructor(private _HttpClient: HttpClient, private _Router: Router) {
+    afterNextRender(() => { //works on browser only 
+      const currentUrl = this._Router.url;
+      if (localStorage.getItem('userToken')) {
         this.decodeUserData();
-        _Router.navigate([localStorage.getItem("currentPage")])
+        // _Router.navigate([localStorage.getItem("currentPage")])
+        const savedPage = localStorage.getItem('currentPage');
+        if (savedPage && savedPage !== currentUrl) {
+          this._Router.navigate([savedPage]);
+        }
       }
     })
 
   }
-  signIn(data:loginData): Observable<SuccessSignin | FieldSignin> {
+  signIn(data: loginData): Observable<SuccessSignin | FieldSignin> {
     return this._HttpClient.post<SuccessSignin | FieldSignin>(`${Environment.baseUrl}api/v1/auth/signin`, data);
   }
 
-  decodeUserData(){
-    const token = JSON.stringify(localStorage.getItem("userToken")) ;
+  decodeUserData() {
+    const token = JSON.stringify(localStorage.getItem("userToken"));
     const decoded = jwtDecode<decodedData>(token);
-    this.userData.next(decoded) 
+    this.userData.next(decoded)
     console.log(this.userData.getValue());
   }
 

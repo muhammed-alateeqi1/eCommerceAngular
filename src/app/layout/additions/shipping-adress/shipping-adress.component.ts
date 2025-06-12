@@ -1,7 +1,8 @@
+import { CartService } from './../../../shared/services/cart/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderService } from '../../../shared/services/orders/order.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-shipping-adress',
   standalone: true,
@@ -11,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ShippingAdressComponent implements OnInit {
   isLoading: boolean = false;
-  constructor(private _OrderService: OrderService, private _ActivatedRoute: ActivatedRoute) { }
+  constructor(private _OrderService: OrderService, private _ActivatedRoute: ActivatedRoute, private _Router: Router, private _CartService: CartService) { }
   ngOnInit(): void {
     if (typeof localStorage != "undefined") {
       localStorage.setItem('currentPage', '/shippingaddress')
@@ -26,15 +27,16 @@ export class ShippingAdressComponent implements OnInit {
   })
 
   submitShippingAdressForm() {
-    console.log(this.shippingAdressForm.value)
-
+    // console.log(this.shippingAdressForm.value)
     if (this.shippingAdressForm.valid) {
       this._ActivatedRoute.paramMap.subscribe({
         next: p => {
           console.log(p.get('cartId'))
           this._OrderService.checkOrder(p.get('cartId')!, this.shippingAdressForm.value).subscribe({
             next: res => {
-              window.open(res.session.url, '_blank')
+              localStorage.removeItem('currentPage');
+              window.location.href = res.session.url;
+              this._CartService.clearLocalCart();
             }
           })
         }
