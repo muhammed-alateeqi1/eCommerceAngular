@@ -1,1 +1,162 @@
-<p>allorders works!</p>
+<!-- allorders.component.html -->
+<div class="orders-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-shopping-bag"></i>
+            طلباتي
+        </h1>
+        <p class="page-subtitle">تتبع وإدارة جميع طلباتك</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>جاري تحميل طلباتك...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && userOrders.length === 0" class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-box-open"></i>
+        </div>
+        <h3>لا توجد طلبات بعد</h3>
+        <p>ابدأ التسوق الآن واستمتع بتجربة رائعة</p>
+        <button class="btn-primary">
+            <i class="fas fa-shopping-cart"></i>
+            ابدأ التسوق
+        </button>
+    </div>
+
+    <!-- Orders List -->
+    <div *ngIf="!isLoading && userOrders.length > 0" class="orders-list">
+        <div *ngFor="let order of userOrders;" class="order-card" [id]="'invoice-' + order.id">
+
+            <!-- Order Header -->
+            <div class="order-header">
+                <div class="order-info">
+                    <h3 class="order-id">
+                        <i class="fas fa-receipt"></i>
+                        طلب رقم: {{ order.id }}
+                    </h3>
+                    <p class="order-date">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ formatDate(order.createdAt) }}
+                    </p>
+                </div>
+
+                <div class="order-status">
+                    <span class="status-badge" [ngClass]="getStatusClass(order.isPaid, order.isDelivered)">
+                        {{ getStatusText(order.isPaid, order.isDelivered) }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-item">
+                    <span class="label">طريقة الدفع:</span>
+                    <span class="value">{{ getPaymentMethodText(order.paymentMethodType) }}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">عدد المنتجات:</span>
+                    <span class="value">{{ order.cartItems.length }} منتج</span>
+                </div>
+                <div class="summary-item total">
+                    <span class="label">إجمالي المبلغ:</span>
+                    <span class="value">{{ formatPrice(order.totalOrderPrice) }}</span>
+                </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div *ngIf="order.shippingAddress" class="shipping-section">
+                <h4 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    عنوان الشحن
+                </h4>
+                <div class="address-details">
+                    <p><strong>{{ order.shippingAddress.city }}</strong></p>
+                    <p>{{ order.shippingAddress.details }}</p>
+                    <p class="phone">
+                        <i class="fas fa-phone"></i>
+                        {{ order.shippingAddress.phone }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="items-section">
+                <h4 class="section-title">
+                    <i class="fas fa-list"></i>
+                    تفاصيل الطلب
+                </h4>
+
+                <div class="items-list">
+                    <div *ngFor="let item of order.cartItems" class="cart-item">
+                        <div class="item-image">
+                            <img [src]="item.product.imageCover" [alt]="item.product.title" />
+                        </div>
+
+                        <div class="item-details">
+                            <h5 class="item-title">{{ item.product.title }}</h5>
+                            <div class="item-meta">
+                                <span class="brand">{{ item.product.brand.name }}</span>
+                                <span class="category">{{ item.product.category.name }}</span>
+                            </div>
+                            <div class="item-rating" *ngIf="item.product.ratingsAverage">
+                                <i class="fas fa-star"></i>
+                                {{ item.product.ratingsAverage }}
+                                <span class="rating-count">({{ item.product.ratingsQuantity }})</span>
+                            </div>
+                        </div>
+
+                        <div class="item-pricing">
+                            <div class="quantity">
+                                <span class="qty-label">الكمية:</span>
+                                <span class="qty-value">{{ item.count }}</span>
+                            </div>
+                            <div class="price">{{ formatPrice(item.price) }}</div>
+                            <div class="total-item-price">{{ formatPrice(item.price * item.count) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="price-breakdown">
+                <div class="price-row">
+                    <span>المبلغ الفرعي:</span>
+                    <span>{{ formatPrice(order.totalOrderPrice - order.taxPrice - order.shippingPrice) }}</span>
+                </div>
+                <div class="price-row">
+                    <span>رسوم الشحن:</span>
+                    <span>{{ formatPrice(order.shippingPrice) }}</span>
+                </div>
+                <div class="price-row">
+                    <span>الضرائب:</span>
+                    <span>{{ formatPrice(order.taxPrice) }}</span>
+                </div>
+                <div class="price-row total-row">
+                    <span>الإجمالي:</span>
+                    <span>{{ formatPrice(order.totalOrderPrice) }}</span>
+                </div>
+            </div>
+
+            <!-- Order Actions -->
+            <div class="order-actions">
+                <button class="btn-secondary" *ngIf="!order.isDelivered">
+                    <i class="fas fa-truck"></i>
+                    تتبع الطلب
+                </button>
+                <button class="btn-outline" (click)="downloadInvoice(order.id.toString())">
+                    <i class="fas fa-file-invoice"></i>
+                    تحميل الفاتورة
+                </button>
+                <button class="btn-outline" *ngIf="order.isDelivered">
+                    <i class="fas fa-redo"></i>
+                    إعادة الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -20,25 +20,20 @@ export class loginService {
       const currentUrl = this._Router.url;
       if (localStorage.getItem('userToken')) {
         this.decodeUserData();
-        // _Router.navigate([localStorage.getItem("currentPage")])
         const savedPage = localStorage.getItem('currentPage');
         if (savedPage && savedPage !== currentUrl) {
           this._Router.navigate([savedPage]);
         }
       }
-    })
-
-  }
+    });
+  };
   signIn(data: loginData): Observable<SuccessSignin | FieldSignin> {
     return this._HttpClient.post<SuccessSignin | FieldSignin>(`${Environment.baseUrl}api/v1/auth/signin`, data);
   }
-
   decodeUserData() {
     const token = JSON.stringify(localStorage.getItem("userToken"));
     const decoded = jwtDecode<decodedData>(token);
-    this.userData.next(decoded)
+    this.userData.next(decoded);
     console.log(this.userData.getValue());
   }
-
-
 }

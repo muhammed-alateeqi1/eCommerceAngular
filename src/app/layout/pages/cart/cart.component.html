@@ -55,10 +55,15 @@
     
     @if(data.products.length > 0){
     <div class="mt-6 flex justify-end">
-        <button [routerLink]="['/shippingaddress' , data._id]" class="bg-green-400 text-white py-2 px-6 rounded-lg transition-opacity" >
-            Proceed to Checkout
+
+
+        <button  [routerLink]="['/shippingaddress' , data._id]" class="bg-green-400 text-white py-2 px-6 rounded-lg transition-opacity m-1" >
+            Online Checkout
         </button>
-        <button class="bg-red-400 mx-2 text-white py-2 px-6 rounded-lg hover:opacity-90 transition-opacity" (click)="clearCartPage()">
+        <button [routerLink]="['/shippingaddresscash' , data._id]" class="bg-green-600 text-white py-2 px-6 rounded-lg transition-opacity m-1" >
+            Cash Checkout
+        </button>
+        <button class="bg-red-400 mx-2 text-white py-2 px-6 rounded-lg hover:opacity-90 transition-opacity m-1" (click)="clearCartPage()">
             Clear Cart 
         </button>
     </div>

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ResetcodeService {
-  constructor(private _httpClient:HttpClient , private _Router:Router) { }
+constructor(private _httpClient:HttpClient , private _Router:Router) { }
   resetCodeFunc(resetCode:resetCode):Observable<resetCode>{
     return this._httpClient.post<resetCode>(`${Environment.baseUrl}api/v1/auth/verifyResetCode`, resetCode);
   }
