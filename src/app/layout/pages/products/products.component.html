@@ -1,1 +1,37 @@
-<p>products works!</p>
+@if(isLoading){
+<div class="h-screen center">
+    <span class="loader"></span>
+</div>
+}@else {
+<div class="container mx-auto">
+    <div class="w-1/2 flex justify-center items-center my-5 mx-auto">
+        <label class="sr-only">Search</label>
+        <div class="relative w-full">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+             <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <input [(ngModel)]="userWord" type="text"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                placeholder="Search category name..." />
+        </div>
+    </div>
+    <div class="flex flex-wrap">
+        @for(product of productList | search : userWord ; track $index){
+        <div class="md:w-2/12 p-3">
+            <div class="product p-2 cursor-pointer">
+                <div [routerLink]="['/productdetails' , product._id]">
+                    <img [src]="product.imageCover" class="w-full" alt="">
+                    <span class="text-main font-sm">{{product.category.name | lowercase }}</span>
+                    <h3 class="my-3 text-lg font-medium">{{product.title.split(' ').splice(0,2).join(' ')| onsale}}</h3>
+                    <div class="flex flex-wrap justify-between">
+                        <span>{{product.price | currency : 'e£' }}</span>
+                        <span>{{product.ratingsAverage}} <i class="fa fa-star rating-color"></i></span>
+                    </div>
+                </div>
+                <button class="my-2 p-2 text-white w-full hover:opacity-90  bg-main rounded" (click)="addProductToCart(product._id)">Add To Cart</button>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+}
