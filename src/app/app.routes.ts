@@ -15,6 +15,7 @@ import { ProductDetailsComponent } from './layout/additions/product-details/prod
 import { ShippingAdressComponent } from './layout/additions/shipping-adress/shipping-adress.component';
 import { AllordersComponent } from './layout/additions/allorders/allorders.component';
 import { ShippingAddressCashComponent } from './layout/additions/shipping-address-cash/shipping-address-cash.component';
+import { CategoryProductsComponent } from './layout/pages/category-products/category-products.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,8 +30,9 @@ export const routes: Routes = [
     { path: 'sendcode', component: SendcodeformComponent },
     { path: 'repassword', component: RepasswordComponent },
     { path: 'allorders', component: AllordersComponent, canActivate: [authGuard] },
-    { path: 'shippingaddress/:cartId', component: ShippingAdressComponent},
-    { path: 'shippingaddresscash/:cartId', component: ShippingAddressCashComponent},
+    { path: 'shippingaddress/:cartId', component: ShippingAdressComponent },
+    { path: 'shippingaddresscash/:cartId', component: ShippingAddressCashComponent },
     { path: 'productdetails/:productId', component: ProductDetailsComponent, canActivate: [authGuard] },
+    {path: 'category/:id',component: CategoryProductsComponent,canActivate: [authGuard]},
     { path: '**', component: NotfoundComponent }, //wildCard (wrong path)
 ];

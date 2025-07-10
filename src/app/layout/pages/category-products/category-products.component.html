@@ -1,0 +1,24 @@
+<div class="container mx-auto px-4 my-10">
+    <h2 class="text-2xl font-bold text-center my-4">Category Products</h2>
+
+    @if (isLoading) {
+    <div class="text-center">Loading...</div>
+    } @else {
+    @if (products.length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @for (product of products; track product.id) {
+        <a [routerLink]="['/productdetails', product.id]"
+            class="block p-4 border rounded shadow hover:shadow-md hover:bg-gray-50 transition cursor-pointer">
+            <img [src]="product.imageCover" class="w-full h-40 object-cover mb-2 rounded">
+            <h3 class="text-lg font-semibold">{{ product.title }}</h3>
+            <p class="text-sm text-gray-600">{{ product.price }} E£</p>
+        </a>
+        }
+    </div>
+    } @else {
+    <div class="text-center text-gray-600 py-6">
+        No products found for this category.
+    </div>
+    }
+    }
+</div>

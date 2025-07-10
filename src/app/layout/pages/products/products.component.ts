@@ -31,10 +31,9 @@ export class ProductsComponent implements OnInit {
   Products() {
     this.isLoading = true;
     this._ProductService.getAllProducts().subscribe({
-      next: (res) => {
+      next: (res) => {      
         this.productList = res.data;
         this.isLoading = false;
-
       },
       error: (err) => {
         this.isLoading = false;
@@ -47,7 +46,6 @@ export class ProductsComponent implements OnInit {
       timeOut: 3000,
       progressBar: true,
       closeButton: true,
-
     })
   }
    addProductToCart(productId: string) {

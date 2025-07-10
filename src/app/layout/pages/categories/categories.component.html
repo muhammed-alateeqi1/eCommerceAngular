@@ -1,1 +1,26 @@
-<p>categories works!</p>
+<div class="container mx-auto px-4 my-10">
+    <h3 class="bg-main text-white text-xl w-1/4 m-auto font-semibold text-center py-1 rounded mb-6">
+        Most Requested Categories
+    </h3>
+
+    @if (isLoading) {
+    <div class="flex justify-center items-center h-64">
+        <span class="loader"></span>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @for (category of categoryList; track category._id) {
+        <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+            <img [src]="category.image" alt="{{ category.name }}" class="w-full h-40 object-cover" />
+            <div class="p-4 text-center">
+                <h4 class="text-lg font-bold mb-2 text-gray-800">{{ category.name }}</h4>
+                <a [routerLink]="['/category', category._id]"
+                    class="inline-block text-main font-medium hover:underline">
+                    View Products
+                </a>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
