@@ -1,1 +1,16 @@
-<p>brands works!</p>
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4 text-center">All Brands</h2>
+
+  @if (loading) {
+    <div class="text-center">Loading...</div>
+  } @else {
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      @for (brand of brands; track brand.id) {
+        <div class="p-4 border rounded-lg shadow hover:shadow-lg transition">
+          <img [src]="brand.image" [alt]="brand.name" class="w-full h-24 object-contain mb-2" />
+          <p class="text-center font-semibold">{{ brand.name }}</p>
+        </div>
+      }
+    </div>
+  }
+</div>
