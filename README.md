@@ -1,27 +1,67 @@
-# ECommerceSession
+# 🛒 eCommerce Angular Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+A complete eCommerce frontend built with **Angular 17** and **TailwindCSS**, offering modern UI, real-world features, and a live production deployment.
 
-## Development server
+🔗 **Live Demo**: [freshcarteco.netlify.app](https://freshcarteco.netlify.app/login)  
+📂 **Source Code**: [GitHub Repository](https://github.com/muhammed-alateeqi1/eCommerceAngular)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- 👤 **User Authentication** (Login/Register/Forgot Password)
+- 🛍️ **Browse Products** with filters (categories, brands, prices)
+- 🔍 **Product Details** with real-time rating display
+- 🧾 **Cart System** with quantity controls and total cost
+- 💳 **Checkout Process** supporting:
+  - 🔘 Cash on delivery
+  - 💸 Online payment
+  - 💳 Credit Card form with validation (Strip)
+- 📦 **Orders Management**:
+  - ✅ View all past orders
+  - 📄 View and download **electronic invoice**
+- 📚 **Categories & Brands Management**
+- 🔐 Auth-Guarded routes
+- 📲 Fully Responsive across all screen sizes
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🧰 Tech Stack
 
-## Running unit tests
+- **Framework**: Angular 17 (Standalone Components)
+- **Styling**: TailwindCSS
+- **Routing**: Angular Router + Guards
+- **State Management**: BehaviorSubject
+- **Authentication**: JWT (JSON Web Token)
+- **PDF Invoice**: Auto-generated downloadable invoice
+- **Payment**: Integration with payment API (Cash + Card + Online)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## ⚙️ Control Flow Summary
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```mermaid
+graph TD
+A[Login/Register] --> B[Home Page]
+B --> C[View Products]
+C --> D[Add to Cart]
+D --> E[Cart Page]
+E --> F[Checkout Page]
+F --> G[Choose Payment Type]
+G --> H[Place Order]
+H --> I[View All Orders]
+I --> J[Download Invoice]
+```
+**Test Account** : 
+```
+email : mu.alateeqi@gmail.com 
+pw : M1062002a
+```
+💡 How to Run Locally
+```
+git clone https://github.com/muhammed-alateeqi1/eCommerceAngular.git
+cd eCommerceAngular
+npm install
+ng serve -o
+```
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
