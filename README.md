@@ -52,9 +52,15 @@ G --> H[Place Order]
 H --> I[View All Orders]
 I --> J[Download Invoice]
 ```
+**Test Account** : 
+```
+email : mu.alateeqi@gmail.com 
+pw : M1062002a
+```
 💡 How to Run Locally
 git clone https://github.com/muhammed-alateeqi1/eCommerceAngular.git
 cd eCommerceAngular
 npm install
 ng serve -o
+
 
