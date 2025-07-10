@@ -19,7 +19,7 @@ export class RegisterComponent {
   registerForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [Validators.required, Validators.minLength(8), Validators.pattern(/^[A-Z][a-z0-9]{8,}$/)]),
+    password: new FormControl<string>('', [Validators.required,Validators.minLength(8),Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)]),
     rePassword: new FormControl<string>('', [Validators.required]),
     phone: new FormControl<string>('', [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)]),
   }, { validators: this.checkRepasswordMatch });
