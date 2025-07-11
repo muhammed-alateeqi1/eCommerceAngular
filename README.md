@@ -1,67 +1,163 @@
-# 🛒 eCommerce Angular Application
 
-A complete eCommerce frontend built with **Angular 17** and **TailwindCSS**, offering modern UI, real-world features, and a live production deployment.
+# 🛍️ eCommerce Angular SSR
 
-🔗 **Live Demo**: [freshcarteco.netlify.app](https://freshcarteco.netlify.app/login)  
-📂 **Source Code**: [GitHub Repository](https://github.com/muhammed-alateeqi1/eCommerceAngular)
+This is a production-ready **eCommerce frontend** built using **Angular 17** and **Server-Side Rendering (SSR)** via **Express.js**. It includes complete authentication, routing, product handling, cart management, and server integration for scalable deployment.
+
+---
+
+## 📦 Project Structure
+
+```
+eCommerceAngular/
+├── src/
+│   ├── app/
+│   │   ├── layout/           # Pages and components (home, login, register, cart...)
+│   │   ├── shared/           # Services, interfaces, guards
+│   │   └── app.routes.ts     # All route definitions
+├── server.ts                 # Express SSR entry point
+├── angular.json              # Angular CLI config
+├── package.json              # Dependencies & scripts
+```
 
 ---
 
 ## 🚀 Features
 
-- 👤 **User Authentication** (Login/Register/Forgot Password)
-- 🛍️ **Browse Products** with filters (categories, brands, prices)
-- 🔍 **Product Details** with real-time rating display
-- 🧾 **Cart System** with quantity controls and total cost
-- 💳 **Checkout Process** supporting:
-  - 🔘 Cash on delivery
-  - 💸 Online payment
-  - 💳 Credit Card form with validation (Strip)
-- 📦 **Orders Management**:
-  - ✅ View all past orders
-  - 📄 View and download **electronic invoice**
-- 📚 **Categories & Brands Management**
-- 🔐 Auth-Guarded routes
-- 📲 Fully Responsive across all screen sizes
+- ✅ Angular 17 (Standalone Components + Server-Side Rendering)
+- 🔐 JWT Authentication with route protection
+- 🛒 Shopping Cart with persistent storage
+- 📃 Reactive Forms with validation (Login/Register)
+- 📦 Tailwind CSS + Flowbite UI components
+- 🔁 SSR with Express.js for fast loading and SEO
+- 🔔 Toast notifications (ngx-toastr)
+- 📄 PDF Export support (html2pdf.js)
 
 ---
 
-## 🧰 Tech Stack
+## 📥 Installation
 
-- **Framework**: Angular 17 (Standalone Components)
-- **Styling**: TailwindCSS
-- **Routing**: Angular Router + Guards
-- **State Management**: BehaviorSubject
-- **Authentication**: JWT (JSON Web Token)
-- **PDF Invoice**: Auto-generated downloadable invoice
-- **Payment**: Integration with payment API (Cash + Card + Online)
+1. Clone the repository:
 
----
-
-## ⚙️ Control Flow Summary
-
-```mermaid
-graph TD
-A[Login/Register] --> B[Home Page]
-B --> C[View Products]
-C --> D[Add to Cart]
-D --> E[Cart Page]
-E --> F[Checkout Page]
-F --> G[Choose Payment Type]
-G --> H[Place Order]
-H --> I[View All Orders]
-I --> J[Download Invoice]
-```
-**Test Account** : 
-```
-email : mu.alateeqi@gmail.com 
-pw : M1062002a
-```
-💡 How to Run Locally
-```
+```bash
 git clone https://github.com/muhammed-alateeqi1/eCommerceAngular.git
 cd eCommerceAngular
-npm install
-ng serve -o
 ```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
+
+```bash
+npm start
+```
+
+---
+
+## 🖥️ SSR & Production Build
+
+To build and run the application with SSR:
+
+```bash
+npm run build
+npm run serve:ssr:eCommerceSession
+```
+
+App will be available at: `http://localhost:4000`
+
+---
+
+## 🌐 Environment Configuration
+
+API configuration is located in:
+
+```bash
+src/app/base/Environment.ts
+```
+
+> ✅ In production, you should:
+> - Replace static `Environment.baseUrl` with `.env` support (using dotenv in server.ts)
+> - Use different environments (`environment.prod.ts`)
+
+---
+
+## 🔐 Authentication
+- JWT stored in `localStorage`
+- AuthGuard checks login state
+- Token is decoded via `jwt-decode` to extract user identity
+- BehaviorSubject is used to hold logged-in user info
+---
+
+## ⚠️ Security Recommendations (Pre-Production)
+
+> ✔️ = Implemented
+> ❗ = Highly recommended
+> 🔄 = Suggested enhancement
+
+| Recommendation | Status | Notes |
+|----------------|--------|-------|
+| Remove `console.log` in production code | ✔️ | Already removed from login/register/services |
+| Verify JWT expiration in `auth.guard.ts` | ✔️ | Patched with `exp` check |
+| Avoid relying on `localStorage` for token | ❗ | Use `HttpOnly` cookies via backend instead |
+| Use Express middleware: `helmet`, `cors`, `rate-limit` | ❗ | Add to `server.ts` for added protection |
+| Sanitize user inputs | 🔄 | Add `ngx-mask` or Angular sanitizers where needed |
+| Avoid direct use of `headers.host` in SSR engine | ❗ | Use a trusted `BASE_URL` instead |
+| Apply Content Security Policy (CSP) | 🔄 | Set strict headers in Express |
+| SSR file path safety | ✔️ | SSR static serving is safe but should validate base paths |
+| No API keys or secrets in frontend | ✔️ | All API endpoints are generic |
+| Avoid CDN for critical assets | 🔄 | Move FontAwesome to local assets for reliability and control |
+
+---
+
+## ✨ UI Technologies
+
+- Tailwind CSS + Flowbite
+- Font Awesome Icons
+- Responsive design
+- Toast feedback (ngx-toastr)
+
+---
+
+
+
+> Coverage and e2e testing are recommended for production.
+
+---
+
+## 📌 Suggested Improvements
+
+- [ ] Angular HTTP Interceptor for auth token injection
+- [ ] Use Angular environments + .env file for configs
+- [ ] Implement lazy loading for cart/products modules
+- [ ] Add logout auto-expiry via token `exp`
+- [ ] Translate form & alert messages (i18n)
+- [ ] Optimize SSR render for speed with static generation
+
+---
+
+## 👤 Author
+
+Developed by [Muhammed Al-Ateeqi](https://github.com/muhammed-alateeqi1)  
+📧 Email: mu.alateeqi@gmail.com
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 📚 Documentation & Contribution
+
+For documentation updates or to contribute:
+
+1. Fork this repository
+2. Create a new feature branch
+3. Submit pull request
+
+For API specs or architecture diagram, refer to the `/docs` directory (to be created).
 
