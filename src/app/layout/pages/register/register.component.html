@@ -37,7 +37,7 @@
         </div>
         <div class="my-3">
           <label class="block" for="password">Password:</label>
-          <input  formControlName="password" type="text" id="password" class="w-full rounded">
+          <input  formControlName="password" type="password" id="password" class="w-full rounded">
           @if(registerForm.get('password')?.errors && registerForm.get('password')?.touched){
           <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-red-400">
             @if(registerForm.get('password')?.errors?.['required']){
