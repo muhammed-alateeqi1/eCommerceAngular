@@ -1,4 +1,3 @@
-import { Data } from './../../../shared/interfaces/ProductDetails';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
@@ -6,12 +5,11 @@ import { CategorysliderComponent } from "../../additions/categoryslider/category
 import { HomesliderComponent } from "../../../additions/homeslider/homeslider.component";
 import { RouterLink } from '@angular/router';
 import { OnsalePipe } from '../../../shared/pipes/onsale.pipe';
-import { CurrencyPipe, LowerCasePipe, UpperCasePipe } from '@angular/common';
+import { CurrencyPipe, LowerCasePipe } from '@angular/common';
 import { SearchPipe } from "../../../shared/pipes/search.pipe";
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
-// import { FooterComponent } from "../../additions/footer/footer.component";
 
 @Component({
   selector: 'app-home',
@@ -37,12 +35,7 @@ export class HomeComponent implements OnInit {
       next: (res) => {
         this.productList = res.data;
         this.isLoading = false;
-
       },
-      error: (err) => {
-        this.isLoading = false;
-        console.log(err);
-      }
     })
   }
   alertResponse(resMessage: string) {
@@ -50,7 +43,6 @@ export class HomeComponent implements OnInit {
       timeOut: 3000,
       progressBar: true,
       closeButton: true,
-
     })
   }
   addProductToCart(productId: string) {
@@ -58,10 +50,7 @@ export class HomeComponent implements OnInit {
       next: response => {
         console.log(response.message);
         this.alertResponse(response.message);
-      }, error: err=>{
-      this.alertResponse(err.message);
-      }
+      },
     })
   }
-
 }

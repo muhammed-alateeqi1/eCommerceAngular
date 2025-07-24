@@ -81,7 +81,6 @@ export class AllordersComponent implements OnInit {
       return;
     }
 
-    // استورد html2pdf.js ديناميكيًا عشان نضمن إنه بيتنفذ في المتصفح بس
     import('html2pdf.js').then((html2pdf: any) => {
       const buttons = invoiceElement.querySelectorAll('.order-actions');
       buttons.forEach((btn: any) => btn.style.display = 'none');

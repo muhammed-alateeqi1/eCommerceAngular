@@ -3,15 +3,18 @@ import { provideRouter, RouterModule, withViewTransitions } from '@angular/route
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HttpClient, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { setHeaderInterceptor } from './shared/interceptors/set-header.interceptor';
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { spinnerInterceptor } from './shared/interceptors/spinner.interceptor';
 
 export const appConfig: ApplicationConfig = {
   
   providers: [provideAnimations(),
   provideToastr(), provideRouter(routes, withViewTransitions()), provideClientHydration()
-    , provideHttpClient(withFetch()), importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule)
+    , provideHttpClient(withFetch(),withInterceptors([setHeaderInterceptor , errorInterceptor , spinnerInterceptor])), importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule,NgxSpinnerModule)
   ]
-  
 };

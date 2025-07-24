@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   isLoading:boolean = false;
   errMsg!:string;
-  
   registerForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl<string>('', [Validators.required, Validators.email]),
@@ -25,7 +24,7 @@ export class RegisterComponent {
   }, { validators: this.checkRepasswordMatch });
 
   constructor(private _SignupAuthService: SignupAuthService , private _Router:Router) { }
-  checkRepasswordMatch(g: AbstractControl): { [key: string]: boolean } | null {
+  checkRepasswordMatch(g: AbstractControl): {[key: string]: boolean } | null {
     if (g.get('password')?.value === g.get('rePassword')?.value) {
       return null;
     } else {
@@ -50,6 +49,6 @@ export class RegisterComponent {
         }
       });
     } 
-    console.log(this.registerForm.value);    
+    console.log(this.registerForm.value);
   }
 }

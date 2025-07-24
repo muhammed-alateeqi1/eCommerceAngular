@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
               "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
               "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",

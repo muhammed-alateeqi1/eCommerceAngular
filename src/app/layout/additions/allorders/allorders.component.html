@@ -144,10 +144,6 @@
 
             <!-- Order Actions -->
             <div class="order-actions">
-                <button class="btn-secondary" *ngIf="!order.isDelivered">
-                    <i class="fas fa-truck"></i>
-                    تتبع الطلب
-                </button>
                 <button class="btn-outline" (click)="downloadInvoice(order.id.toString())">
                     <i class="fas fa-file-invoice"></i>
                     تحميل الفاتورة

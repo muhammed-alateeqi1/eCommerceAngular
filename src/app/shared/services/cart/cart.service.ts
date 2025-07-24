@@ -23,11 +23,14 @@ export class CartService {
     });
   }
 
-  private get userTokenHeader() {
-    return {
-      token: typeof window !== 'undefined' ? (localStorage.getItem('userToken') || ' ') : ' '
-    };
-  }
+
+  // this step dosen't matter after using setHeaderInterceptors 
+
+  // private get userTokenHeader() {
+  //   return {
+  //     token: typeof window !== 'undefined' ? (localStorage.getItem('userToken') || ' ') : ' '
+  //   };
+  // }
 
   private loadCartFromStorage(): any[] {
     if (typeof window === 'undefined') return [];
@@ -43,14 +46,12 @@ export class CartService {
     return this._HttpClient.post<CartResponse | CartFailedResponse>(
       `${Environment.baseUrl}api/v1/cart`,
       { productId: ProductId },
-      { headers: this.userTokenHeader }
     );
   }
 
   getLoggedUserCart(): Observable<LoggedUserCart> {
     return this._HttpClient.get<LoggedUserCart>(
       `${Environment.baseUrl}api/v1/cart`,
-      { headers: this.userTokenHeader }
     );
   }
 
@@ -59,14 +60,12 @@ export class CartService {
     return this._HttpClient.put<LoggedUserCart>(
       `${Environment.baseUrl}api/v1/cart/${productId}`,
       { count: count },
-      { headers: this.userTokenHeader }
     );
   }
  
   removeCartProduct(productId: string): Observable<LoggedUserCart> {
     return this._HttpClient.delete<LoggedUserCart>(
       `${Environment.baseUrl}api/v1/cart/${productId}`,
-      { headers: this.userTokenHeader }
     ).pipe(
       tap(response => {
         console.log(response);
@@ -83,7 +82,10 @@ export class CartService {
     }
   }
   clearCartFromServer(): Observable<any> {
-  return this._HttpClient.delete(`${Environment.baseUrl}api/v1/cart`, { headers: this.userTokenHeader });
+  return this._HttpClient.delete(`${Environment.baseUrl}api/v1/cart`);
 }
 
 }
+
+
+
