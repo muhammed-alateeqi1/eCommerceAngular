@@ -20,23 +20,23 @@
         @if(isLogin == true){
         <li>
           <a routerLink="home" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Home</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Home' | translate }}</a>
         </li>
         <li>
           <a routerLink="cart" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Cart</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Cart' | translate }}</a>
         </li>
         <li>
           <a routerLink="products" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Products</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Products' | translate }}</a>
         </li>
         <li>
           <a routerLink="categories" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Categories</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Categories' | translate }}</a>
         </li>
         <li>
           <a routerLink="brands" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Brands</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Brands' | translate }}</a>
         </li>
         }
       </ul>
@@ -47,11 +47,11 @@
         @if(isLogin == false){
           <li>
             <a routerLink="login" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Login' | translate }}</a>
           </li>
           <li>
             <a routerLink="register" routerLinkActive="bg-main text-white"
-            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
+            class="block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Register' | translate }}</a>
           </li>
         }@else {
           <li class="shopping-icon">
@@ -64,7 +64,7 @@
           </li>
           <li>
           <a (click)="_LogoutService.logOut()"
-            class="cursor-pointer block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
+            class="cursor-pointer block p-2 text-gray-900 rounded  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{'navbar.Logout' | translate }}</a>
         </li>
 
         }

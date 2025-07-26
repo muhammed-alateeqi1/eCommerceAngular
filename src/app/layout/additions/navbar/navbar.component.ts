@@ -4,11 +4,12 @@ import { loginService } from '../../../shared/services/authorization/login-servi
 import { LogoutService } from '../../../shared/services/authorization/logout.service';
 import { FlowbiteService } from '../../../shared/services/flowbite/flowbite.service';
 import { CartService } from '../../../shared/services/cart/cart.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive , TranslateModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

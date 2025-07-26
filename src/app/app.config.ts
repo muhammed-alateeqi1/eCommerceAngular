@@ -10,11 +10,23 @@ import { setHeaderInterceptor } from './shared/interceptors/set-header.intercept
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { spinnerInterceptor } from './shared/interceptors/spinner.interceptor';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 export const appConfig: ApplicationConfig = {
-  
   providers: [provideAnimations(),
   provideToastr(), provideRouter(routes, withViewTransitions()), provideClientHydration()
-    , provideHttpClient(withFetch(),withInterceptors([setHeaderInterceptor , errorInterceptor , spinnerInterceptor])), importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule,NgxSpinnerModule)
+    , provideHttpClient(withFetch(), withInterceptors([setHeaderInterceptor, errorInterceptor, spinnerInterceptor])), importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule, NgxSpinnerModule,
+      TranslateModule.forRoot({
+        defaultLanguage : 'en',
+        loader: {
+          provide : TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      })) 
   ]
 };
