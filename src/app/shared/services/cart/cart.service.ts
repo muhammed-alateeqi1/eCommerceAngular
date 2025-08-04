@@ -44,8 +44,7 @@ export class CartService {
     this.cartItems.next(updatedItems);
 
     return this._HttpClient.post<CartResponse | CartFailedResponse>(
-      `${Environment.baseUrl}api/v1/cart`,
-      { productId: ProductId },
+      `${Environment.baseUrl}api/v1/cart`,{ productId: ProductId },
     );
   }
 

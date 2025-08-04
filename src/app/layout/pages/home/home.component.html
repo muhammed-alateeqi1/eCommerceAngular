@@ -1,10 +1,14 @@
 <app-homeslider></app-homeslider>
 <div class="container mx-auto">
-    <h2 class="font-medium my-5 bg-main w-fit rounded ml-6 text-white p-1 text-xs sm:text-sm">Show Popular Categories
-    </h2>
+    <h2 class="font-medium my-5 bg-main w-fit rounded ml-6 text-white p-1 text-xs sm:text-sm">Show Popular Categories</h2>
     <app-categoryslider></app-categoryslider>
 </div>
 @if(isLoading){
+<div class="h-screen center">
+    <span class="loader"></span>
+</div>
+}@else {
+    @if(isLoading){
 <div class="h-screen center">
     <span class="loader"></span>
 </div>
@@ -40,4 +44,5 @@
         }
     </div>
 </div>
+}
 }

@@ -16,7 +16,7 @@ export class CategorysliderComponent implements OnInit {
     autoplay: true,
     autoplayTimeout : 3000,
     autoplayHoverPause:true,
-    loop: true,
+    loop: false,
     mouseDrag: true,
     touchDrag: true,
     pullDrag: true,

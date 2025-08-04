@@ -18,15 +18,18 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 export const appConfig: ApplicationConfig = {
   providers: [provideAnimations(),
-  provideToastr(), provideRouter(routes, withViewTransitions()), provideClientHydration()
-    , provideHttpClient(withFetch(), withInterceptors([setHeaderInterceptor, errorInterceptor, spinnerInterceptor])), importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule, NgxSpinnerModule,
-      TranslateModule.forRoot({
-        defaultLanguage : 'en',
-        loader: {
-          provide : TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
-        }
-      })) 
+  provideToastr(),
+  provideRouter(routes, withViewTransitions()),
+  provideClientHydration(),
+  provideHttpClient(withFetch(), withInterceptors([setHeaderInterceptor, errorInterceptor, spinnerInterceptor])),
+  importProvidersFrom(RouterModule, BrowserAnimationsModule, ToastrModule, NgxSpinnerModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }))
   ]
 };
