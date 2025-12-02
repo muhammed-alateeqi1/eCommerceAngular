@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
       }
     })
     this._CartService.cartItems$.subscribe(items => {
-      this.cartCount =items.length;
+      this.cartCount = items.length;
     })
   }
 

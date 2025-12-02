@@ -56,6 +56,9 @@ export class CartService {
 
 
   updateproductQuantity(productId: string, count: string): Observable<LoggedUserCart> {
+     const currentItems = this.cartItems.getValue();
+    const updatedItems = [...currentItems, productId];
+    this.cartItems.next(updatedItems);
     return this._HttpClient.put<LoggedUserCart>(
       `${Environment.baseUrl}api/v1/cart/${productId}`,
       { count: count },
@@ -83,6 +86,8 @@ export class CartService {
   clearCartFromServer(): Observable<any> {
   return this._HttpClient.delete(`${Environment.baseUrl}api/v1/cart`);
 }
+
+
 
 }
 
