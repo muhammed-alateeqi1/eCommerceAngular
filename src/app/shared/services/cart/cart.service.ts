@@ -38,45 +38,90 @@ export class CartService {
     return saved ? JSON.parse(saved) : [];
   }
 
-  addProductToCart(ProductId: string): Observable<CartResponse | CartFailedResponse> {
-    const currentItems = this.cartItems.getValue();
-    const updatedItems = [...currentItems, ProductId];
-    this.cartItems.next(updatedItems);
+  // addProductToCart(ProductId: string): Observable<CartResponse | CartFailedResponse> {
+  //   const currentItems = this.cartItems.getValue();
+  //   const updatedItems = [...currentItems, ProductId];
+  //   this.cartItems.next(updatedItems);
 
-    return this._HttpClient.post<CartResponse | CartFailedResponse>(
-      `${Environment.baseUrl}api/v1/cart`,{ productId: ProductId },
-    );
-  }
-
-  getLoggedUserCart(): Observable<LoggedUserCart> {
-    return this._HttpClient.get<LoggedUserCart>(
+  //   return this._HttpClient.post<CartResponse | CartFailedResponse>(
+  //     `${Environment.baseUrl}api/v1/cart`,{ productId: ProductId },
+  //   );
+  // }
+  // 1
+addProductToCart(ProductId: string) {
+  return this._HttpClient
+    .post<CartResponse | CartFailedResponse>(
       `${Environment.baseUrl}api/v1/cart`,
-    );
-  }
-
-
-  updateproductQuantity(productId: string, count: string): Observable<LoggedUserCart> {
-     const currentItems = this.cartItems.getValue();
-    const updatedItems = [...currentItems, productId];
-    this.cartItems.next(updatedItems);
-    return this._HttpClient.put<LoggedUserCart>(
-      `${Environment.baseUrl}api/v1/cart/${productId}`,
-      { count: count },
-    );
-  }
- 
-  removeCartProduct(productId: string): Observable<LoggedUserCart> {
-    return this._HttpClient.delete<LoggedUserCart>(
-      `${Environment.baseUrl}api/v1/cart/${productId}`,
-    ).pipe(
-      tap(response => {
-        console.log(response);
-        const currentItems = this.cartItems.getValue();
-        const updatedItems = currentItems.filter(id => id !== productId);
-        this.cartItems.next(updatedItems);
+      { productId: ProductId }
+    )
+    .pipe(
+      tap((res: any) => {
+        this.cartItems.next(res.data.products);
       })
     );
-  }
+}
+
+  // getLoggedUserCart(): Observable<LoggedUserCart> {
+  //   return this._HttpClient.get<LoggedUserCart>(
+  //     `${Environment.baseUrl}api/v1/cart`,
+  //   );
+  // }
+
+//2
+getLoggedUserCart() {
+  return this._HttpClient.get<LoggedUserCart>(
+    `${Environment.baseUrl}api/v1/cart`
+  ).pipe(
+    tap(res => {
+      this.cartItems.next(res.data.products);
+    })
+  );
+}
+
+  // updateproductQuantity(productId: string, count: string): Observable<LoggedUserCart> {
+  //    const currentItems = this.cartItems.getValue();
+  //   const updatedItems = [...currentItems, productId];
+  //   this.cartItems.next(updatedItems);
+  //   return this._HttpClient.put<LoggedUserCart>(
+  //     `${Environment.baseUrl}api/v1/cart/${productId}`,
+  //     { count: count },
+  //   );
+  // }
+
+  //3
+ updateproductQuantity(productId: string, count: string) {
+  return this._HttpClient.put<LoggedUserCart>(
+    `${Environment.baseUrl}api/v1/cart/${productId}`,
+    { count }
+  ).pipe(
+    tap(res => {
+      this.cartItems.next(res.data.products);
+    })
+  );
+}
+
+  // removeCartProduct(productId: string): Observable<LoggedUserCart> {
+  //   return this._HttpClient.delete<LoggedUserCart>(
+  //     `${Environment.baseUrl}api/v1/cart/${productId}`,
+  //   ).pipe(
+  //     tap(response => {
+  //       console.log(response);
+  //       const currentItems = this.cartItems.getValue();
+  //       const updatedItems = currentItems.filter(id => id !== productId);
+  //       this.cartItems.next(updatedItems);
+  //     })
+  //   );
+  // }
+  removeCartProduct(productId: string) {
+  return this._HttpClient.delete<LoggedUserCart>(
+    `${Environment.baseUrl}api/v1/cart/${productId}`
+  ).pipe(
+    tap(res => {
+      this.cartItems.next(res.data.products);
+    })
+  );
+}
+
     clearLocalCart() {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('cartItems');

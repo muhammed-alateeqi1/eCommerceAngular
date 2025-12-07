@@ -5,6 +5,7 @@ import { LogoutService } from '../../../shared/services/authorization/logout.ser
 import { FlowbiteService } from '../../../shared/services/flowbite/flowbite.service';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { Data } from '../../../shared/interfaces/getLoggedUserCart';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,8 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
-  cartCount = 0;
+  cartCount !:number;
+    data !: Data;
   logOut() {
     throw new Error('Method not implemented.');
   }
@@ -36,10 +38,21 @@ export class NavbarComponent implements OnInit {
         }
       }
     })
+    
     this._CartService.cartItems$.subscribe(items => {
-      this.cartCount = items.length;
+  this.cartCount = items.reduce((sum, item) => sum + item.count, 0);
     })
   }
-
+   updateProductCartCount(productId: string, count: number) {
+      this._CartService.updateproductQuantity(productId, count.toString()).subscribe({
+        next: res => {
+          console.log(res);
+          this.data = res.data;
+        },
+        error: err => {
+          alert(err)
+        }
+      })
+    }
 
 }
