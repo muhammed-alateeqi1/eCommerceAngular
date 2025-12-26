@@ -1,7 +1,7 @@
 
 # 🛍️ eCommerce Angular SSR
 
-This is a production-ready **eCommerce frontend** built using **Angular 17** and **Server-Side Rendering (SSR)** via **Express.js**. It includes complete authentication, routing, product handling, cart management, and server integration for scalable deployment.
+This is a production-ready **eCommerce frontend** built using **Angular 17** and **Server-Side Rendering (SSR)**. It includes complete authentication, routing, product handling, cart management, and server integration for scalable deployment.
 
 ---
 
@@ -28,7 +28,6 @@ eCommerceAngular/
 - 🛒 Shopping Cart with persistent storage
 - 📃 Reactive Forms with validation (Login/Register)
 - 📦 Tailwind CSS + Flowbite UI components
-- 🔁 SSR with Express.js for fast loading and SEO
 - 🔔 Toast notifications (ngx-toastr)
 - 📄 PDF Export support (html2pdf.js)
 
