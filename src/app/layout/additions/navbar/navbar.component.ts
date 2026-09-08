@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit {
     })
     
     this._CartService.cartItems$.subscribe(items => {
-  this.cartCount = items.reduce((sum, item) => sum + item.count, 0);
+    this.cartCount = items.reduce((sum, item) => sum + item.count, 0);
     })
   }
    updateProductCartCount(productId: string, count: number) {

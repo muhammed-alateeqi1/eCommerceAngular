@@ -24,7 +24,7 @@ export class LoginComponent {
   submitLogin() {
     if (this.loginForm.valid) {
       this.successLogedIn = true
-      const loginFormData: loginData = this.loginForm.value as loginData;
+      const loginFormData:loginData = this.loginForm.value as loginData;
       console.log(this.loginForm);
 
       this._loginService.signIn(loginFormData).subscribe({
