@@ -1,19 +1,23 @@
-<div class="w-full px-2 sm:px-4 overflow-hidden">
-    @if(isLoading){
-      <div class="flex justify-center items-center h-32">
-        <i class="fa fa-spin fa-spinner text-2xl text-main"></i>
-      </div>
-    }@else {
-      <owl-carousel-o [options]="customOptions" class="pb-6">
-        @for(category of categoryList; track $index){
-          <ng-template carouselSlide [id]="category._id">
-            <div class="px-1 sm:px-2">
-              <img [src]="category.image" [alt]="category.name" [title]="category.name" class="w-full h-auto object-cover rounded-md shadow-sm">
-              <p class="text-center text-xs sm:text-sm mt-1 truncate">{{category.name}}</p>
-            </div>
-          </ng-template>
-        }
-      </owl-carousel-o>
-    }
-  </div>
-
+<div class="w-full overflow-hidden">
+  @if (isLoading) {
+    <div class="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
+      @for (placeholder of [1,2,3,4,5,6]; track $index) {
+        <div class="skeleton h-32"></div>
+      }
+    </div>
+  } @else {
+    <owl-carousel-o [options]="customOptions" class="pb-6">
+      @for (category of categoryList; track category._id) {
+        <ng-template carouselSlide [id]="category._id">
+          <div class="px-1.5">
+            <img [src]="category.image" [alt]="category.name" [title]="category.name"
+                 class="w-full rounded-lg">
+            <p class="mt-2 truncate text-center text-xs font-medium text-gray-700 dark:text-slate-300">
+              {{ category.name }}
+            </p>
+          </div>
+        </ng-template>
+      }
+    </owl-carousel-o>
+  }
+</div>

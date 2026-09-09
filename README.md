@@ -5,6 +5,8 @@ An **eCommerce frontend** built with **Angular 17** standalone components. It co
 
 The production build is **client-rendered** and deploys as a static SPA. An optional SSR/prerender build is kept behind a separate configuration — see [Rendering modes](#-rendering-modes).
 
+The interface is fully responsive and ships with **light and dark themes**.
+
 ---
 
 ## 📦 Project Structure
@@ -14,8 +16,10 @@ eCommerceAngular/
 ├── src/
 │   ├── app/
 │   │   ├── layout/           # Pages and components (home, login, register, cart...)
-│   │   ├── shared/           # Services, interfaces, guards
+│   │   ├── settings/         # Practice NgModule - not routed, see note below
+│   │   ├── shared/           # Services, interfaces, guards, shared components
 │   │   └── app.routes.ts     # All route definitions
+│   └── styles.css            # Design tokens + shared component classes
 ├── server.ts                 # Express SSR entry point (optional `ssr` build only)
 ├── angular.json              # Angular CLI config
 ├── vercel.json               # Vercel output dir + SPA fallback
@@ -28,6 +32,8 @@ eCommerceAngular/
 ## 🚀 Features
 
 - ✅ Angular 17 (Standalone Components, lazy-loaded routes)
+- 🌗 Light / dark / system theme with no flash on first paint
+- 📱 Responsive from 360px up — mobile nav, fluid grids, no horizontal scroll
 - 🔐 JWT Authentication with route protection
 - 🛒 Shopping Cart with persistent storage
 - 📃 Reactive Forms with validation (Login/Register)
@@ -119,6 +125,49 @@ did nothing. Removing it and self-hosting the CSS cut the initial bundle from
 
 ---
 
+## 🎨 Theming & UI
+
+Tailwind runs in `darkMode: 'class'`. `ThemeService` resolves the preference
+(`light` / `dark` / `system`, persisted in `localStorage`) and toggles `.dark` on
+`<html>`; a small inline script in `index.html` applies the same class **before
+first paint**, so a dark-mode visitor never sees a white flash while Angular boots.
+Choosing `system` keeps following the OS if it changes, and the choice syncs across
+open tabs.
+
+Colours are declared once as CSS custom properties in `src/styles.css` (`--surface`,
+`--text`, `--border`, `--brand`...) with a `.dark` override, alongside shared component
+classes — `.btn-primary`, `.card`, `.field-input`, `.badge`, `.skeleton`, `.auth-shell` —
+so pages compose from a small vocabulary instead of repeating long utility chains.
+
+Notable UI work:
+
+| Area | Change |
+|---|---|
+| Navbar | Rebuilt responsive. Both menu panels previously shared `id="navbar-default"`, so Flowbite's collapse toggle only ever reached the first one and the account links stayed unreachable on mobile. Now driven by Angular state. |
+| Product cards | Extracted to one `ProductCardComponent`; home and products each carried a copy of the same markup. "Add to cart" no longer appears only on hover, which made it untappable on touch screens. |
+| Grids | Fluid `2 -> 3 -> 4 -> 5 -> 6` columns. Products were full-width below `md`. |
+| Search inputs | Were fixed at `w-1/2`, unusably narrow on phones. |
+| Orders page | Rewritten in English with the shared design system, replacing ~500 lines of bespoke CSS in a different visual language. |
+| Auth screens | One shared `.auth-shell` card. The old per-page radial gradients were painted on a hardcoded `#ffffff` and could not go dark. |
+| Shipping forms | All three inputs shared `id="floating_first_name"`, so every label focused the first field. |
+| Loading | Skeleton placeholders instead of a blocking full-screen spinner. |
+| App shell | Dropped a hardcoded 5-second spinner that ran on every page load regardless of whether anything was loading. |
+| Errors | `alert(err)` in the cart replaced with toasts. |
+
+---
+
+## 🧩 The `settings` module
+
+`src/app/settings/` was built purely as an exercise in classic Angular **NgModules**
+and lazy `loadChildren` routing, to contrast with the standalone-component approach
+used everywhere else. Its three pages render placeholder text.
+
+Its route in `app.routes.ts` and its navbar link are **commented out**, so it is not
+reachable and not bundled. The code is kept for reference — uncomment the route to
+re-enable it.
+
+---
+
 ## 🌐 Environment Configuration
 
 API configuration is located in:
@@ -186,11 +235,14 @@ npm test
 ## 📌 Suggested Improvements
 
 - [x] Angular HTTP Interceptor for auth token injection (`setHeaderInterceptor`, scoped to cart/orders/wishlist URLs)
-- [x] Lazy loading for cart/categories/products/brands and the settings module
+- [x] Lazy loading for cart/categories/products/brands
+- [x] Light / dark theme with system support
+- [x] Responsive layout across all pages
 - [ ] Use Angular environments + .env file for configs
 - [ ] Add logout auto-expiry via token `exp`
 - [ ] Strip `console.log` calls from production builds
-- [ ] Translate form & alert messages (i18n)
+- [ ] Finish `ar` translations — only the navbar is covered, and pages are not RTL-aware
+- [ ] Revisit the `currentPage` restore in `loginService`: it overrides deep links, so reloading `/products` can land on the last visited page
 - [ ] Make `authGuard` platform-aware so SSR/prerender can be re-enabled
 
 ---

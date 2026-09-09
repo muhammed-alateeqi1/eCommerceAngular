@@ -15,6 +15,8 @@ export class CategoryProductsComponent implements OnInit {
   products: product[] = [];
   isLoading = true;
 
+  readonly skeletons = Array.from({ length: 10 });
+
   constructor(private route: ActivatedRoute, private _ProductService: ProductService) { }
 
   ngOnInit(): void {
@@ -25,8 +27,7 @@ export class CategoryProductsComponent implements OnInit {
   loadProducts() {
     this._ProductService.getAllProducts().subscribe({
       next: (res) => {
-        this.products = res.data.filter(
-          (p: any) => p.category?._id === this.categoryId);
+        this.products = res.data.filter((p: any) => p.category?._id === this.categoryId);
         this.isLoading = false;
       },
       error: () => (this.isLoading = false)

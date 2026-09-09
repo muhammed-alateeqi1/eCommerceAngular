@@ -1,74 +1,76 @@
-import { afterNextRender, Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { Data } from '../../../shared/interfaces/getLoggedUserCart';
-import { RouterLink } from '@angular/router';
-
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css'
+  styleUrl: './cart.component.css',
 })
 export class CartComponent implements OnInit {
-  data !: Data;
-  cartItems: any[] = [];
-  isLoading: boolean = false;
-  constructor(private _CartService: CartService) { }
+  private readonly _CartService = inject(CartService);
+  private readonly _Toster = inject(ToastrService);
+
+  data!: Data;
+  isLoading = false;
+
   ngOnInit(): void {
-    if (typeof localStorage != "undefined") {
-      localStorage.setItem('currentPage', '/cart')
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('currentPage', '/cart');
     }
-    this._CartService.cartItems$.subscribe(items => {
-    this.cartItems = items;
-  });
-    this.getLoggedUserCart()
+    this.getLoggedUserCart();
   }
-  getLoggedUserCart() {
+
+  getLoggedUserCart(): void {
     this.isLoading = true;
     this._CartService.getLoggedUserCart().subscribe({
-      next: res => {
+      next: (res) => {
         this.data = res.data;
         this.isLoading = false;
-        console.log(res.data);
-      }
-    })
+      },
+      error: () => {
+        this.isLoading = false;
+        this._Toster.error('Could not load your cart.');
+      },
+    });
   }
-  updateProductCartCount(productId: string, count: number) {
+
+  updateProductCartCount(productId: string, count: number): void {
     if (count <= 0) {
-      this.deleteProductFromCart(productId)
-    } else {
-      this._CartService.updateproductQuantity(productId, count.toString()).subscribe({
-        next: res => {
-          console.log(res);
-          this.data = res.data;
-        },
-        error: err => {
-          alert(err)
-        }
-      })
+      this.deleteProductFromCart(productId);
+      return;
     }
+    this._CartService.updateproductQuantity(productId, count.toString()).subscribe({
+      next: (res) => (this.data = res.data),
+      // Previously a raw `alert(err)`, which dumped the error object on the user.
+      error: () => this._Toster.error('Could not update the quantity.'),
+    });
   }
-  deleteProductFromCart(productId: string) {
+
+  deleteProductFromCart(productId: string): void {
     this._CartService.removeCartProduct(productId).subscribe({
-      next: res => {
+      next: (res) => {
         this.data = res.data;
-        // console.log(res);
-      }
-    })
+        this._Toster.success('Item removed from your cart.');
+      },
+      error: () => this._Toster.error('Could not remove this item.'),
+    });
   }
-clearCartPage() {
-  this._CartService.clearCartFromServer().subscribe({
-    next: () => {
-      this._CartService.clearLocalCart();
-      this._CartService.getLoggedUserCart().subscribe(res => {
-        this.data = res.data; 
-      });
-    },
-    error: (err) => {
-      console.error('Error clearing cart from server:', err);
-    }
-  });
-}
+
+  clearCartPage(): void {
+    this._CartService.clearCartFromServer().subscribe({
+      next: () => {
+        this._CartService.clearLocalCart();
+        this._CartService.getLoggedUserCart().subscribe({
+          next: (res) => (this.data = res.data),
+        });
+        this._Toster.success('Cart cleared.');
+      },
+      error: () => this._Toster.error('Could not clear your cart.'),
+    });
+  }
 }

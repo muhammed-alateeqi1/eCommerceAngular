@@ -1,37 +1,65 @@
-@if(isLoading){
-    <div class="h-screen flex items-center justify-center">
-        <span class="loader"></span>
-    </div>
-}@else{
-    @if(product){
-        <div class="container mx-auto my-5 px-4">
-            <div class="flex flex-col md:flex-row md:items-start">
-                <div class="w-full md:w-5/12 lg:w-4/12 mb-6 md:mb-0 md:pr-4">
-                    <owl-carousel-o [options]="customOptions">
-                        @for(image of product.images; track $index){
-                            <ng-template carouselSlide>
-                                <img [src]="image" class="w-full h-auto object-cover rounded-lg shadow-md" alt="{{product.title}}">
-                            </ng-template>
-                        }
-                    </owl-carousel-o>
-                </div>
-                <div class="w-full md:w-7/12 lg:w-8/12 px-0 md:px-4">
-                    <h1 class="text-xl md:text-2xl font-medium mb-2">{{product.title}}</h1>
-                    <p class="text-sm text-gray-600 my-3">{{product.description}}</p>
-                    <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded mb-4">{{product.category.name}}</span>
-                    
-                    <div class="flex justify-between items-center my-4 border-t border-b py-3">
-                        <span class="text-lg font-semibold">{{product.price}} EGP</span>
-                        <span class="bg-gray-100 px-2 py-1 rounded text-sm">
-                            <i class="fa fa-star rating-color mr-1"></i>{{product.ratingsAverage}}
-                        </span>
-                    </div>
-                    
-                    <button (click)="addProductToCartFromProductDetails()" class="my-3 py-3 text-white w-full bg-main rounded-lg hover:opacity-90 transition-opacity">
-                        Add To Cart
-                    </button>
-                </div>
-            </div>
+@if (isLoading) {
+  <div class="container grid min-h-[60vh] place-items-center py-10">
+    <span class="loader"></span>
+  </div>
+} @else if (product) {
+  <section class="container py-8">
+    <nav class="mb-6 flex items-center gap-2 text-sm muted" aria-label="Breadcrumb">
+      <a routerLink="/home" class="hover:text-main">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/products" class="hover:text-main">Products</a>
+      <span aria-hidden="true">/</span>
+      <span class="truncate text-gray-900 dark:text-white">{{ product.title }}</span>
+    </nav>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      <!-- Gallery -->
+      <div class="card overflow-hidden p-3">
+        <owl-carousel-o [options]="customOptions">
+          @for (image of product.images; track $index) {
+            <ng-template carouselSlide>
+              <img [src]="image" [alt]="product.title"
+                   class="aspect-square w-full rounded-lg object-cover">
+            </ng-template>
+          }
+        </owl-carousel-o>
+      </div>
+
+      <!-- Details -->
+      <div class="flex flex-col">
+        <span class="badge-brand w-fit">{{ product.category.name }}</span>
+
+        <h1 class="mt-3 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
+          {{ product.title }}
+        </h1>
+
+        <div class="mt-3 flex items-center gap-3 text-sm">
+          <span class="inline-flex items-center gap-1 font-semibold text-gray-900 dark:text-white">
+            <i class="fa fa-star rating-color" aria-hidden="true"></i>{{ product.ratingsAverage }}
+          </span>
+          <span class="muted">·</span>
+          <span class="muted">{{ product.ratingsQuantity }} reviews</span>
         </div>
-    }
+
+        <p class="mt-4 leading-relaxed muted">{{ product.description }}</p>
+
+        <div class="mt-6 flex items-baseline gap-2 border-t border-gray-200 pt-6 dark:border-slate-800">
+          <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ product.price }}</span>
+          <span class="text-sm font-medium muted">EGP</span>
+        </div>
+
+        <button type="button" (click)="addProductToCartFromProductDetails()"
+                class="btn-primary mt-6 w-full !py-3 sm:w-auto sm:px-10">
+          <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Add To Cart
+        </button>
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="container grid min-h-[60vh] place-items-center py-10 text-center">
+    <div>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">Product not found</p>
+      <a routerLink="/products" class="btn-primary mt-4">Back to products</a>
+    </div>
+  </div>
 }

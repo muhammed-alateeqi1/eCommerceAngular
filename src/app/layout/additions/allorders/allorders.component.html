@@ -1,158 +1,148 @@
-<!-- allorders.component.html -->
-<div class="orders-container">
-    <!-- Page Header -->
-    <div class="page-header">
-        <h1 class="page-title">
-            <i class="fas fa-shopping-bag"></i>
-            طلباتي
-        </h1>
-        <p class="page-subtitle">تتبع وإدارة جميع طلباتك</p>
-    </div>
+<section class="container py-8">
+  <div class="mb-6">
+    <h1 class="section-title">My Orders</h1>
+    <p class="mt-1 text-sm muted">Track and manage all of your orders</p>
+  </div>
 
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>جاري تحميل طلباتك...</p>
-    </div>
-
-    <!-- Empty State -->
-    <div *ngIf="!isLoading && userOrders.length === 0" class="empty-state">
-        <div class="empty-icon">
-            <i class="fas fa-box-open"></i>
+  @if (isLoading) {
+    <div class="space-y-4">
+      @for (placeholder of [1, 2]; track $index) {
+        <div class="card space-y-4 p-5">
+          <div class="skeleton h-5 w-1/3"></div>
+          <div class="skeleton h-3 w-1/4"></div>
+          <div class="skeleton h-24 w-full"></div>
         </div>
-        <h3>لا توجد طلبات بعد</h3>
-        <p>ابدأ التسوق الآن واستمتع بتجربة رائعة</p>
-        <button class="btn-primary">
-            <i class="fas fa-shopping-cart"></i>
-            ابدأ التسوق
-        </button>
+      }
     </div>
+  } @else if (userOrders.length) {
+    <div class="space-y-6">
+      @for (order of userOrders; track order.id) {
+        <article class="card overflow-hidden" [id]="'invoice-' + order.id">
 
-    <!-- Orders List -->
-    <div *ngIf="!isLoading && userOrders.length > 0" class="orders-list">
-        <div *ngFor="let order of userOrders;" class="order-card" [id]="'invoice-' + order.id">
+          <!-- Header -->
+          <header class="flex flex-col gap-3 border-b border-gray-200 p-5 sm:flex-row sm:items-center
+                         sm:justify-between dark:border-slate-800">
+            <div>
+              <h2 class="flex items-center gap-2 font-bold text-gray-900 dark:text-white">
+                <i class="fa-solid fa-receipt text-main" aria-hidden="true"></i>
+                Order #{{ order.id }}
+              </h2>
+              <p class="mt-1 flex items-center gap-2 text-sm muted">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                {{ formatDate(order.createdAt) }}
+              </p>
+            </div>
+            <span class="badge w-fit" [class]="getStatusClass(order.isPaid, order.isDelivered)">
+              {{ getStatusText(order.isPaid, order.isDelivered) }}
+            </span>
+          </header>
 
-            <!-- Order Header -->
-            <div class="order-header">
-                <div class="order-info">
-                    <h3 class="order-id">
-                        <i class="fas fa-receipt"></i>
-                        طلب رقم: {{ order.id }}
-                    </h3>
-                    <p class="order-date">
-                        <i class="far fa-calendar-alt"></i>
-                        {{ formatDate(order.createdAt) }}
+          <!-- Summary -->
+          <div class="grid gap-4 border-b border-gray-200 p-5 sm:grid-cols-3 dark:border-slate-800">
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide muted">Payment</dt>
+              <dd class="mt-1 font-semibold text-gray-900 dark:text-white">
+                {{ getPaymentMethodText(order.paymentMethodType) }}
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide muted">Items</dt>
+              <dd class="mt-1 font-semibold text-gray-900 dark:text-white">{{ order.cartItems.length }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-wide muted">Total</dt>
+              <dd class="mt-1 font-bold text-main">{{ formatPrice(order.totalOrderPrice) }}</dd>
+            </div>
+          </div>
+
+          <!-- Shipping address -->
+          @if (order.shippingAddress) {
+            <div class="border-b border-gray-200 p-5 dark:border-slate-800">
+              <h3 class="mb-2 flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white">
+                <i class="fa-solid fa-location-dot text-main" aria-hidden="true"></i> Shipping Address
+              </h3>
+              <p class="font-medium text-gray-900 dark:text-white">{{ order.shippingAddress.city }}</p>
+              <p class="text-sm muted">{{ order.shippingAddress.details }}</p>
+              <p class="mt-1 flex items-center gap-2 text-sm muted">
+                <i class="fa-solid fa-phone" aria-hidden="true"></i> {{ order.shippingAddress.phone }}
+              </p>
+            </div>
+          }
+
+          <!-- Items -->
+          <div class="border-b border-gray-200 p-5 dark:border-slate-800">
+            <h3 class="mb-3 flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white">
+              <i class="fa-solid fa-list text-main" aria-hidden="true"></i> Order Details
+            </h3>
+
+            <ul class="space-y-3">
+              @for (item of order.cartItems; track $index) {
+                <li class="flex items-center gap-4 rounded-lg bg-gray-50 p-3 dark:bg-slate-800/50">
+                  <img [src]="item.product.imageCover" [alt]="item.product.title" loading="lazy"
+                       class="h-16 w-16 shrink-0 rounded-lg object-cover">
+
+                  <div class="min-w-0 flex-1">
+                    <p class="line-clamp-1 font-semibold text-gray-900 dark:text-white">{{ item.product.title }}</p>
+                    <p class="mt-0.5 text-xs muted">
+                      {{ item.product.brand.name }} · {{ item.product.category.name }}
                     </p>
-                </div>
+                    @if (item.product.ratingsAverage) {
+                      <p class="mt-1 text-xs muted">
+                        <i class="fa fa-star rating-color" aria-hidden="true"></i>
+                        {{ item.product.ratingsAverage }} ({{ item.product.ratingsQuantity }})
+                      </p>
+                    }
+                  </div>
 
-                <div class="order-status">
-                    <span class="status-badge" [ngClass]="getStatusClass(order.isPaid, order.isDelivered)">
-                        {{ getStatusText(order.isPaid, order.isDelivered) }}
-                    </span>
-                </div>
-            </div>
-
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <div class="summary-item">
-                    <span class="label">طريقة الدفع:</span>
-                    <span class="value">{{ getPaymentMethodText(order.paymentMethodType) }}</span>
-                </div>
-                <div class="summary-item">
-                    <span class="label">عدد المنتجات:</span>
-                    <span class="value">{{ order.cartItems.length }} منتج</span>
-                </div>
-                <div class="summary-item total">
-                    <span class="label">إجمالي المبلغ:</span>
-                    <span class="value">{{ formatPrice(order.totalOrderPrice) }}</span>
-                </div>
-            </div>
-
-            <!-- Shipping Address -->
-            <div *ngIf="order.shippingAddress" class="shipping-section">
-                <h4 class="section-title">
-                    <i class="fas fa-map-marker-alt"></i>
-                    عنوان الشحن
-                </h4>
-                <div class="address-details">
-                    <p><strong>{{ order.shippingAddress.city }}</strong></p>
-                    <p>{{ order.shippingAddress.details }}</p>
-                    <p class="phone">
-                        <i class="fas fa-phone"></i>
-                        {{ order.shippingAddress.phone }}
+                  <div class="shrink-0 text-right">
+                    <p class="text-xs muted">Qty {{ item.count }}</p>
+                    <p class="font-semibold text-gray-900 dark:text-white">
+                      {{ formatPrice(item.price * item.count) }}
                     </p>
-                </div>
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Price breakdown -->
+          <dl class="space-y-2 p-5 text-sm">
+            <div class="flex justify-between">
+              <dt class="muted">Subtotal</dt>
+              <dd class="text-gray-900 dark:text-white">
+                {{ formatPrice(order.totalOrderPrice - order.taxPrice - order.shippingPrice) }}
+              </dd>
             </div>
-
-            <!-- Cart Items -->
-            <div class="items-section">
-                <h4 class="section-title">
-                    <i class="fas fa-list"></i>
-                    تفاصيل الطلب
-                </h4>
-
-                <div class="items-list">
-                    <div *ngFor="let item of order.cartItems" class="cart-item">
-                        <div class="item-image">
-                            <img [src]="item.product.imageCover" [alt]="item.product.title" />
-                        </div>
-
-                        <div class="item-details">
-                            <h5 class="item-title">{{ item.product.title }}</h5>
-                            <div class="item-meta">
-                                <span class="brand">{{ item.product.brand.name }}</span>
-                                <span class="category">{{ item.product.category.name }}</span>
-                            </div>
-                            <div class="item-rating" *ngIf="item.product.ratingsAverage">
-                                <i class="fas fa-star"></i>
-                                {{ item.product.ratingsAverage }}
-                                <span class="rating-count">({{ item.product.ratingsQuantity }})</span>
-                            </div>
-                        </div>
-
-                        <div class="item-pricing">
-                            <div class="quantity">
-                                <span class="qty-label">الكمية:</span>
-                                <span class="qty-value">{{ item.count }}</span>
-                            </div>
-                            <div class="price">{{ formatPrice(item.price) }}</div>
-                            <div class="total-item-price">{{ formatPrice(item.price * item.count) }}</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex justify-between">
+              <dt class="muted">Shipping</dt>
+              <dd class="text-gray-900 dark:text-white">{{ formatPrice(order.shippingPrice) }}</dd>
             </div>
-
-            <!-- Price Breakdown -->
-            <div class="price-breakdown">
-                <div class="price-row">
-                    <span>المبلغ الفرعي:</span>
-                    <span>{{ formatPrice(order.totalOrderPrice - order.taxPrice - order.shippingPrice) }}</span>
-                </div>
-                <div class="price-row">
-                    <span>رسوم الشحن:</span>
-                    <span>{{ formatPrice(order.shippingPrice) }}</span>
-                </div>
-                <div class="price-row">
-                    <span>الضرائب:</span>
-                    <span>{{ formatPrice(order.taxPrice) }}</span>
-                </div>
-                <div class="price-row total-row">
-                    <span>الإجمالي:</span>
-                    <span>{{ formatPrice(order.totalOrderPrice) }}</span>
-                </div>
+            <div class="flex justify-between">
+              <dt class="muted">Tax</dt>
+              <dd class="text-gray-900 dark:text-white">{{ formatPrice(order.taxPrice) }}</dd>
             </div>
-
-            <!-- Order Actions -->
-            <div class="order-actions">
-                <button class="btn-outline" (click)="downloadInvoice(order.id.toString())">
-                    <i class="fas fa-file-invoice"></i>
-                    تحميل الفاتورة
-                </button>
-                <button class="btn-outline" *ngIf="order.isDelivered">
-                    <i class="fas fa-redo"></i>
-                    إعادة الطلب
-                </button>
+            <div class="flex justify-between border-t border-gray-200 pt-2 dark:border-slate-800">
+              <dt class="font-bold text-gray-900 dark:text-white">Total</dt>
+              <dd class="font-bold text-main">{{ formatPrice(order.totalOrderPrice) }}</dd>
             </div>
-        </div>
+          </dl>
+
+          <!-- Actions. The `order-actions` class is a hook: downloadInvoice()
+               hides this block before rendering the PDF. -->
+          <div class="order-actions flex flex-wrap gap-2 border-t border-gray-200 p-5 dark:border-slate-800">
+            <button type="button" class="btn-secondary" (click)="downloadInvoice(order.id.toString())">
+              <i class="fa-solid fa-file-invoice" aria-hidden="true"></i> Download Invoice
+            </button>
+          </div>
+        </article>
+      }
     </div>
-</div>
+  } @else {
+    <div class="card flex flex-col items-center gap-3 px-6 py-20 text-center">
+      <i class="fa-solid fa-box-open text-4xl muted" aria-hidden="true"></i>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">No orders yet</p>
+      <p class="text-sm muted">Once you place an order it will show up here.</p>
+      <a routerLink="/products" class="btn-primary mt-2">Start Shopping</a>
+    </div>
+  }
+</section>

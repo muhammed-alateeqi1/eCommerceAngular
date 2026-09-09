@@ -1,17 +1,15 @@
 {
-    "navbar":{
-    "Home" : "الرئيسيه",
-    "Cart" : "منتجات",
-    "Products" : "السلة",
-    "Categories" : "تصنيفات",
-    "Brands" : "براندات",
-    "Login" : "تسجيل الدخول",
-    "Register" : "انشاء حساب",
-    "Logout" : "تسجيل خروج",
-    "Settings" : "الاعدادات"
-    },
-    "home":{
-        
-    }
-
+  "navbar": {
+    "Home": "الرئيسية",
+    "Cart": "السلة",
+    "Products": "المنتجات",
+    "Categories": "التصنيفات",
+    "Brands": "الماركات",
+    "Orders": "طلباتي",
+    "Login": "تسجيل الدخول",
+    "Register": "إنشاء حساب",
+    "Logout": "تسجيل الخروج",
+    "Settings": "الإعدادات"
+  },
+  "home": {}
 }

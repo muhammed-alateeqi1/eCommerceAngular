@@ -1,61 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
-import { SearchPipe } from "../../../shared/pipes/search.pipe";
-import { RouterLink } from '@angular/router';
-import { OnsalePipe } from '../../../shared/pipes/onsale.pipe';
-import { CurrencyPipe, LowerCasePipe, UpperCasePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../shared/services/cart/cart.service';
-import { ToastrService } from 'ngx-toastr';
+import { ProductCardComponent } from '../../../shared/components/product-card/product-card.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [FormsModule, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe], // Add necessary Angular modules here if needed
+  imports: [FormsModule, ProductCardComponent],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  isLoading : boolean = false;
- productList !: product[]
-  userWord: string = '';
+  private readonly _ProductService = inject(ProductService);
+  private readonly _CartService = inject(CartService);
+  private readonly _Toster = inject(ToastrService);
 
-  constructor(private _ProductService:ProductService , private _CartService: CartService, private _Toster: ToastrService){}
-  ngOnInit(): void {
-    if(typeof localStorage != "undefined"){
-      localStorage.setItem('currentPage','/products')
-    }
-       this.Products()
+  userWord = '';
+  productList: product[] = [];
+  isLoading = false;
+
+  readonly skeletons = Array.from({ length: 12 });
+
+  get visibleProducts(): product[] {
+    const term = this.userWord.trim().toLowerCase();
+    if (!term) return this.productList;
+    return this.productList.filter((item) => item.title.toLowerCase().includes(term));
   }
-  Products() {
+
+  ngOnInit(): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('currentPage', '/products');
+    }
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
     this.isLoading = true;
     this._ProductService.getAllProducts().subscribe({
-      next: (res) => {      
+      next: (res) => {
         this.productList = res.data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: () => {
         this.isLoading = false;
-        console.log(err);
-      }
-    })
+        this._Toster.error('Could not load products. Please try again.');
+      },
+    });
   }
-    alertResponse(resMessage: string) {
-    this._Toster.success(resMessage, '', {
-      timeOut: 3000,
-      progressBar: true,
-      closeButton: true,
-    })
-  }
-   addProductToCart(productId: string) {
+
+  addProductToCart(productId: string): void {
     this._CartService.addProductToCart(productId).subscribe({
-      next: response => {
-        console.log(response.message);
-        this.alertResponse(response.message);
-      }, error: err=>{
-      this.alertResponse(err.message);
-      }
-    })
-  } 
+      next: (response: any) => this._Toster.success(response.message, '', {
+        timeOut: 3000,
+        progressBar: true,
+        closeButton: true,
+      }),
+      error: () => this._Toster.error('Could not add this product to your cart.'),
+    });
+  }
 }

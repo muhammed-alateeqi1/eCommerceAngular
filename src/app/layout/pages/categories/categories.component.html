@@ -1,26 +1,37 @@
-<div class="container mx-auto px-4 my-10">
-    <h3 class="bg-main text-white text-xl w-1/4 m-auto font-semibold text-center py-1 rounded mb-6">
-        Most Requested Categories
-    </h3>
+<section class="container py-8">
+  <div class="mb-6">
+    <h1 class="section-title">Categories</h1>
+    <p class="mt-1 text-sm muted">Explore products by category</p>
+  </div>
 
-    @if (isLoading) {
-    <div class="flex justify-center items-center h-64">
-        <span class="loader"></span>
-    </div>
-    } @else {
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @for (category of categoryList; track category._id) {
-        <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
-            <img [src]="category.image" alt="{{ category.name }}" class="w-full h-40 object-cover" />
-            <div class="p-4 text-center">
-                <h4 class="text-lg font-bold mb-2 text-gray-800">{{ category.name }}</h4>
-                <a [routerLink]="['/category', category._id]"
-                    class="inline-block text-main font-medium hover:underline">
-                    View Products
-                </a>
-            </div>
+  @if (isLoading) {
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      @for (placeholder of skeletons; track $index) {
+        <div class="card overflow-hidden">
+          <div class="skeleton aspect-[4/3] !rounded-none"></div>
+          <div class="p-4"><div class="skeleton mx-auto h-4 w-2/3"></div></div>
         </div>
-        }
+      }
     </div>
-    }
-</div>
+  } @else if (categoryList.length) {
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      @for (category of categoryList; track category._id) {
+        <a [routerLink]="['/category', category._id]" class="card-interactive group block overflow-hidden">
+          <div class="aspect-[4/3] overflow-hidden bg-gray-50 dark:bg-slate-800">
+            <img [src]="category.image" [alt]="category.name" loading="lazy"
+                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+          </div>
+          <div class="p-4 text-center">
+            <h2 class="truncate font-semibold text-gray-900 dark:text-white">{{ category.name }}</h2>
+            <span class="mt-1 inline-block text-xs font-medium text-main">View products →</span>
+          </div>
+        </a>
+      }
+    </div>
+  } @else {
+    <div class="card flex flex-col items-center gap-3 px-6 py-16 text-center">
+      <i class="fa-solid fa-layer-group text-3xl muted" aria-hidden="true"></i>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">No categories available</p>
+    </div>
+  }
+</section>

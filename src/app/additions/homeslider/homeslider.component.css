@@ -1,8 +1,16 @@
-owl-carousel-o img{
-    height: 400px;
-    object-fit: cover;
+/* Fixed pixel heights (400px / 200px) were letting the hero dominate small
+   screens. These scale with the viewport and stay in step with the side tiles. */
+.hero-slide {
+  width: 100%;
+  height: clamp(200px, 38vw, 400px);
+  object-fit: cover;
+  display: block;
 }
-.side-slider img{
-    height: 200px;
-    object-fit: cover;
+
+.side-slide {
+  width: 100%;
+  height: clamp(96px, 18.5vw, 192px);
+  object-fit: cover;
+  border-radius: .75rem;
+  display: block;
 }

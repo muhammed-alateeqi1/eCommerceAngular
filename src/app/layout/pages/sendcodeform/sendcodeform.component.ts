@@ -3,12 +3,12 @@ import { ResetcodeService } from './../../../shared/services/authorization/reset
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { resetCode } from '../../../shared/interfaces/data';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sendcodeform',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './sendcodeform.component.html',
   styleUrl: './sendcodeform.component.css'
 })

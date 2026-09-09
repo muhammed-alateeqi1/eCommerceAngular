@@ -1,77 +1,199 @@
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&family=Encode+Sans:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;500;600;700&family=Encode+Sans:wght@100..900&display=swap');
 
-:root{
-    --font-family: "Encode Sans Expanded", sans-serif ;
-    --bg-color : #00AD18;
-    --rating-color:#e6b71c;
-
-}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body{
+/* ---------------------------------------------------------------------------
+   Design tokens. Light values live on :root; ThemeService toggles `.dark` on
+   <html>, which swaps the same names. Components reference the tokens (or the
+   Tailwind `brand` palette) rather than hardcoding hex values.
+   --------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --font-family: 'Encode Sans Expanded', ui-sans-serif, system-ui, sans-serif;
+    --brand: #00ad18;
+    --brand-strong: #007d12;
+    --rating-color: #e6b71c;
+
+    --surface: #ffffff;
+    --surface-muted: #f7f8fa;
+    --surface-raised: #ffffff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --text-muted: #6b7280;
+  }
+
+  .dark {
+    --brand: #34d777;
+    --brand-strong: #6ee7a0;
+
+    --surface: #0b1120;
+    --surface-muted: #111827;
+    --surface-raised: #161f32;
+    --border: #263349;
+    --text: #e5e7eb;
+    --text-muted: #9aa5b8;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
     font-family: var(--font-family);
-   
-}
-.row{
-    display: flex;
-    flex-wrap: wrap;
-}
-.bg-main{
-    background-color: var(--bg-color);
-}
-.text-main{
-    color: #00AD18;
-}
-.font-sm{
-    font-size: 12px;
-}
-.rating-color{
-    color: var(--rating-color);
-}
-.product{
-    transition: all ease .3s;
-}
-.product:hover{
-    border-radius: 5px;
-    border: solid 1px #00AD18;
-    box-shadow: 0 0 5px #00AD18;
+    background-color: var(--surface-muted);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
 
-}
-.product button{
-    transform: translateY(100%);
-    opacity: 0;
-    transition: all ease .3s;
-}
-.product:hover button{
-    transform: translateY(0%);
-    opacity: 1;
-}
-.center{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+  /* One consistent focus ring across the app, only for keyboard users. */
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--brand);
+    color: #fff;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  /* WebKit */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
 }
 
+/* ---------------------------------------------------------------------------
+   Reusable component classes. These keep the long Tailwind chains out of the
+   templates for elements that repeat on nearly every page.
+   --------------------------------------------------------------------------- */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold
+           transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-brand-500 text-white shadow-sm hover:bg-brand-600 active:scale-[.98]
+           dark:bg-brand-500 dark:hover:bg-brand-400 dark:text-white;
+  }
+  .btn-secondary {
+    @apply btn border border-gray-300 bg-white text-gray-700 hover:bg-gray-50
+           dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+  }
+  .btn-danger {
+    @apply btn bg-red-500 text-white hover:bg-red-600 active:scale-[.98];
+  }
+  .btn-ghost {
+    @apply btn text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-800;
+  }
+
+  .card {
+    @apply rounded-xl border border-gray-200 bg-white shadow-card transition-all duration-200
+           dark:border-slate-800 dark:bg-slate-900;
+  }
+  .card-interactive {
+    @apply card hover:-translate-y-1 hover:border-brand-400 hover:shadow-card-hover;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-gray-700 dark:text-slate-200;
+  }
+  .field-input {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900
+           placeholder:text-gray-400 transition-colors
+           focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30
+           dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100
+           dark:placeholder:text-slate-500 dark:focus:border-brand-400;
+  }
+  .field-error {
+    @apply mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700
+           dark:bg-red-950/50 dark:text-red-300;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl;
+  }
+  .muted {
+    @apply text-gray-500 dark:text-slate-400;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .badge-brand {
+    @apply badge bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300;
+  }
+
+  /* Centred column used by every auth screen (login, register, password flow).
+     Replaces the per-page radial-gradient backgrounds, which were painted on a
+     hardcoded #ffffff and so could not follow the dark theme. */
+  .auth-shell {
+    @apply flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgb(0 173 24 / .07), transparent 42%),
+      radial-gradient(circle at 85% 75%, rgb(0 173 24 / .07), transparent 42%);
+  }
+
+  /* Loading placeholder used while data is in flight. */
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-gray-200 dark:bg-slate-800;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite]
+           bg-gradient-to-r from-transparent via-white/50 to-transparent
+           dark:via-white/10;
+  }
+}
+
+@layer utilities {
+  .bg-main { background-color: var(--brand); }
+  .text-main { color: var(--brand); }
+  .rating-color { color: var(--rating-color); }
+  .font-sm { font-size: 12px; }
+
+  .center {
+    @apply flex flex-wrap items-center justify-center;
+  }
+}
+
+/* Spinner kept from the original design, now theme-aware. */
 .loader {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #535050;
-    border-bottom-color: #3bff0a;
-    border-radius: 50%; 
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    }
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--border);
+  border-bottom-color: var(--brand);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
 
-    @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-    } 
-      
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

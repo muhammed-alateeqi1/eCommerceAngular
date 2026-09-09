@@ -1,38 +1,38 @@
-import { afterNextRender, Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CategoryService } from '../../../shared/services/categories/category.service';
 import { Category } from '../../../shared/interfaces/getLoggedUserCart';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule , RouterLink ],
+  imports: [RouterLink],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrl: './categories.component.css',
 })
-export class CategoriesComponent implements OnInit{
-  isLoading :boolean = false;
-    categoryList!: Category[]
-  constructor(private _CategoryService:CategoryService){}
+export class CategoriesComponent implements OnInit {
+  private readonly _CategoryService = inject(CategoryService);
+
+  isLoading = false;
+  categoryList: Category[] = [];
+
+  readonly skeletons = Array.from({ length: 8 });
+
   ngOnInit(): void {
-    if(typeof localStorage != "undefined"){
-      localStorage.setItem('currentPage','/categories')
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('currentPage', '/categories');
     }
     this.getAllCategories();
   }
-    getAllCategories() {
+
+  getAllCategories(): void {
     this.isLoading = true;
     this._CategoryService.getAllCategories().subscribe({
       next: (response) => {
-        this.isLoading = false;
         this.categoryList = response.data;
-        console.log(this.categoryList);
-      },
-      error: (err) => {
         this.isLoading = false;
-        console.log(err);
-      }
-    })
+      },
+      error: () => (this.isLoading = false),
+    });
   }
 }

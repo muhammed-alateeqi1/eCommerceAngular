@@ -2,10 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>eCommerce</title>
+  <title>FreshCart — Angular eCommerce</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="FreshCart — an Angular 17 eCommerce storefront with authentication, product browsing, cart and checkout.">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script>
+    // Apply the stored theme before first paint, otherwise a dark-mode user sees
+    // a white flash while Angular boots. ThemeService takes over from here.
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var dark = stored === 'dark' ||
+          (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        document.querySelector('meta[name="theme-color"]')
+          .setAttribute('content', dark ? '#0b1120' : '#ffffff');
+      } catch (e) { /* storage blocked - fall back to the light theme */ }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

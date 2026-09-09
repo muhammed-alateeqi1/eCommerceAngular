@@ -1,14 +1,12 @@
-<!-- addition component -->
-<div class="flex flex-col min-h-screen">
-  <app-navbar></app-navbar>
-  <main class="flex-grow">
-    <router-outlet></router-outlet>
+<div class="flex min-h-screen flex-col">
+  <app-navbar />
+
+  <main class="flex-1">
+    <router-outlet />
   </main>
-  <app-footer></app-footer>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, .8)"
-  template="<img src='assets/images/Loader.png' width='400' />"
->
-</ngx-spinner>
+
+  <app-footer />
 </div>
-<!-- addition component -->
+
+<ngx-spinner bdColor="rgba(15, 23, 42, .55)" color="#00ad18" type="ball-scale-multiple" size="medium">
+</ngx-spinner>

@@ -1,71 +1,111 @@
+<section class="container py-8">
+  <h1 class="section-title">Shopping Cart</h1>
 
-@if(isLoading){
-<div class="h-screen center">
-    <span class="loader"></span>
-</div>
-}@else{
-
-
-@if(data){
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-xl md:text-2xl font-semibold my-3">Shop Cart</h1>
-    <p class="text-main mb-5 font-semibold">Total Cart Price: {{data.totalCartPrice}} EGP</p>
-
-    @for(item of data.products; track $index){
-    <div class="flex flex-col sm:flex-row items-center justify-between bg-gray-50 shadow-sm rounded-lg mb-4 overflow-hidden">
-        <!-- Product Image -->
-        <div class="w-full sm:w-2/12 md:w-1/12">
-            <img src="{{item.product.imageCover}}" class="w-full h-32 sm:h-24 object-cover" alt="{{item.product.title}}">
+  @if (isLoading) {
+    <div class="mt-6 space-y-4">
+      @for (placeholder of [1,2,3]; track $index) {
+        <div class="card flex items-center gap-4 p-4">
+          <div class="skeleton h-24 w-24 shrink-0"></div>
+          <div class="flex-1 space-y-2">
+            <div class="skeleton h-4 w-2/3"></div>
+            <div class="skeleton h-3 w-1/4"></div>
+          </div>
         </div>
-        <!-- Product Details -->
-        <div class="w-full sm:w-6/12 md:w-8/12 p-4">
-            <h2 class="text-lg font-medium mb-2">{{item.product.title}}</h2>
-            <p class="text-main mb-3">Price: {{item.price}} EGP</p>
-            <button 
-                class="flex items-center text-sm text-gray-600 hover:text-red-500 transition-colors" 
-                (click)="deleteProductFromCart(item.product._id)">
-                <span>Remove</span>
-                <i class="fa fa-trash text-main ml-2"></i>
-            </button>
-        </div>
-        <!-- Quantity Controls -->
-        <div class="w-full sm:w-4/12 md:w-3/12 p-4 flex items-center justify-center">
-            <div class="flex items-center justify-between border rounded-lg overflow-hidden">
-                <button 
-                    (click)="updateProductCartCount(item.product._id, item.count = item.count-1)" 
-                    class="text-white bg-red-400 hover:bg-red-500 px-4 py-2 focus:outline-none transition-colors">
-                    −
-                </button>
-                <span class="px-4 py-2 text-center min-w-12">{{item.count}}</span>
-                <button 
-                    (click)="updateProductCartCount(item.product._id, item.count = item.count+1)" 
-                    class="text-white bg-green-500 hover:bg-green-600 px-4 py-2 focus:outline-none transition-colors">
-                    +
-                </button>
+      }
+    </div>
+  } @else if (data && data.products.length) {
+
+    <p class="mt-1 text-sm muted">
+      {{ data.products.length }} {{ data.products.length === 1 ? 'item' : 'items' }} in your cart
+    </p>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-3">
+
+      <!-- Line items -->
+      <div class="space-y-4 lg:col-span-2">
+        @for (item of data.products; track item.product._id) {
+          <article class="card flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
+            <a [routerLink]="['/productdetails', item.product._id]" class="shrink-0">
+              <img [src]="item.product.imageCover" [alt]="item.product.title" loading="lazy"
+                   class="h-32 w-full rounded-lg object-cover sm:h-24 sm:w-24">
+            </a>
+
+            <div class="min-w-0 flex-1">
+              <a [routerLink]="['/productdetails', item.product._id]"
+                 class="line-clamp-2 font-semibold text-gray-900 hover:text-main dark:text-white">
+                {{ item.product.title }}
+              </a>
+              <p class="mt-1 font-bold text-main">{{ item.price }} EGP</p>
+              <button type="button" (click)="deleteProductFromCart(item.product._id)"
+                      class="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-gray-500
+                             transition-colors hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400">
+                <i class="fa fa-trash" aria-hidden="true"></i> Remove
+              </button>
             </div>
+
+            <!-- Quantity stepper -->
+            <div class="flex items-center gap-1 self-start rounded-lg border border-gray-200 p-1
+                        dark:border-slate-700 sm:self-center">
+              <button type="button" [disabled]="item.count <= 1"
+                      (click)="updateProductCartCount(item.product._id, item.count - 1)"
+                      class="grid h-8 w-8 place-items-center rounded-md text-gray-600 transition-colors
+                             hover:bg-gray-100 disabled:opacity-40 dark:text-slate-300 dark:hover:bg-slate-800"
+                      aria-label="Decrease quantity">−</button>
+              <span class="min-w-8 text-center text-sm font-semibold text-gray-900 dark:text-white">{{ item.count }}</span>
+              <button type="button"
+                      (click)="updateProductCartCount(item.product._id, item.count + 1)"
+                      class="grid h-8 w-8 place-items-center rounded-md text-gray-600 transition-colors
+                             hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                      aria-label="Increase quantity">+</button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- Order summary -->
+      <aside class="lg:col-span-1">
+        <div class="card sticky top-24 p-5">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Order Summary</h2>
+
+          <dl class="mt-4 space-y-2 text-sm">
+            <div class="flex justify-between">
+              <dt class="muted">Subtotal</dt>
+              <dd class="font-medium text-gray-900 dark:text-white">{{ data.totalCartPrice }} EGP</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="muted">Delivery</dt>
+              <dd class="font-medium text-brand-600 dark:text-brand-400">Free</dd>
+            </div>
+          </dl>
+
+          <div class="mt-4 flex justify-between border-t border-gray-200 pt-4 dark:border-slate-800">
+            <span class="font-semibold text-gray-900 dark:text-white">Total</span>
+            <span class="text-lg font-bold text-main">{{ data.totalCartPrice }} EGP</span>
+          </div>
+
+          <div class="mt-5 space-y-2">
+            <button type="button" class="btn-primary w-full" [routerLink]="['/shippingaddress', data._id]">
+              <i class="fa-solid fa-credit-card" aria-hidden="true"></i> Online Checkout
+            </button>
+            <button type="button" class="btn-secondary w-full" [routerLink]="['/shippingaddresscash', data._id]">
+              <i class="fa-solid fa-money-bill" aria-hidden="true"></i> Cash on Delivery
+            </button>
+            <button type="button" class="btn-ghost w-full !text-red-600 hover:!bg-red-50
+                                          dark:!text-red-400 dark:hover:!bg-red-950/40"
+                    (click)="clearCartPage()">
+              Clear Cart
+            </button>
+          </div>
         </div>
+      </aside>
     </div>
-    }
-    @if(data.products.length === 0){
-    <div class="text-center flex justify-center items-center py-8">
-        <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 font-medium text-yellow-800 ring-1 text-2xl ring-yellow-600/20 ring-inset">Your cart is empty</span>
-    </div>
-    }
-    @if(data.products.length > 0){
-    <div class="mt-6 flex justify-end">
 
-
-        <button  [routerLink]="['/shippingaddress' , data._id]" class="bg-green-400 text-white py-2 px-6 rounded-lg transition-opacity m-1" >
-            Online Checkout
-        </button>
-        <button [routerLink]="['/shippingaddresscash' , data._id]" class="bg-green-600 text-white py-2 px-6 rounded-lg transition-opacity m-1" >
-            Cash Checkout
-        </button>
-        <button class="bg-red-400 mx-2 text-white py-2 px-6 rounded-lg hover:opacity-90 transition-opacity m-1" (click)="clearCartPage()">
-            Clear Cart 
-        </button>
+  } @else {
+    <div class="card mt-6 flex flex-col items-center gap-3 px-6 py-20 text-center">
+      <i class="fa-solid fa-cart-shopping text-4xl muted" aria-hidden="true"></i>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">Your cart is empty</p>
+      <p class="text-sm muted">Browse the catalogue and add something you like.</p>
+      <a routerLink="/products" class="btn-primary mt-2">Start Shopping</a>
     </div>
-    }
-</div>
-}
-}
+  }
+</section>

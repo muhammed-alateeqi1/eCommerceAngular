@@ -1,17 +1,15 @@
 {
-    "navbar":{
-    "Home" : "Home",
-    "Cart" : "Cart",
-    "Products" : "Products",
-    "Categories" : "Categories",
-    "Brands" : "Brands",
-    "Login" : "Login",
-    "Register" : "Register",
-    "Logout" : "Logout",
-    "Settings" : "Settings"
-    },
-    "home":{
-        
-    }
-
+  "navbar": {
+    "Home": "Home",
+    "Cart": "Cart",
+    "Products": "Products",
+    "Categories": "Categories",
+    "Brands": "Brands",
+    "Orders": "Orders",
+    "Login": "Login",
+    "Register": "Register",
+    "Logout": "Logout",
+    "Settings": "Settings"
+  },
+  "home": {}
 }

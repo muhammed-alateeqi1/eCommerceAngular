@@ -1,57 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
-import { CategorysliderComponent } from "../../additions/categoryslider/categoryslider.component";
-import { HomesliderComponent } from "../../../additions/homeslider/homeslider.component";
-import { RouterLink } from '@angular/router';
-import { OnsalePipe } from '../../../shared/pipes/onsale.pipe';
-import { CurrencyPipe, LowerCasePipe } from '@angular/common';
-import { SearchPipe } from "../../../shared/pipes/search.pipe";
-import { FormsModule } from '@angular/forms';
+import { CategorysliderComponent } from '../../additions/categoryslider/categoryslider.component';
+import { HomesliderComponent } from '../../../additions/homeslider/homeslider.component';
 import { CartService } from '../../../shared/services/cart/cart.service';
-import { ToastrService } from 'ngx-toastr';
-import { ProductsComponent } from '../products/products.component';
+import { ProductCardComponent } from '../../../shared/components/product-card/product-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CategorysliderComponent, FormsModule, HomesliderComponent, RouterLink, OnsalePipe, LowerCasePipe, CurrencyPipe, SearchPipe ], // Add necessary Angular modules here if needed
+  imports: [
+    CategorysliderComponent,
+    HomesliderComponent,
+    ProductCardComponent,
+    FormsModule,
+    RouterLink,
+  ],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'] // Corrected from styleUrl to styleUrls
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  userWord: string = '';
-  productList !: product[]
-  isLoading: boolean = false;
-  constructor(private _ProductService: ProductService, private _CartService: CartService, private _Toster: ToastrService) { }
+  private readonly _ProductService = inject(ProductService);
+  private readonly _CartService = inject(CartService);
+  private readonly _Toster = inject(ToastrService);
+
+  userWord = '';
+  productList: product[] = [];
+  isLoading = false;
+
+  /** Placeholder tiles rendered while the product request is in flight. */
+  readonly skeletons = Array.from({ length: 12 });
+
+  /**
+   * Filtered in the component rather than through the `search` pipe in the
+   * template, so the list is evaluated once per change detection pass instead
+   * of once per binding that needs it.
+   */
+  get visibleProducts(): product[] {
+    const term = this.userWord.trim().toLowerCase();
+    if (!term) return this.productList;
+    return this.productList.filter((item) => item.title.toLowerCase().includes(term));
+  }
+
   ngOnInit(): void {
-    if (typeof localStorage !== "undefined") {
+    if (typeof localStorage !== 'undefined') {
       localStorage.setItem('currentPage', '/home');
     }
-    this.Products()
+    this.loadProducts();
   }
-  Products() {
+
+  loadProducts(): void {
     this.isLoading = true;
     this._ProductService.getAllProducts().subscribe({
       next: (res) => {
         this.productList = res.data;
         this.isLoading = false;
       },
-    })
-  }
-  alertResponse(resMessage: string) {
-    this._Toster.success(resMessage, '', {
-      timeOut: 3000,
-      progressBar: true,
-      closeButton: true,
-    })
-  }
-  addProductToCart(productId: string) {
-    this._CartService.addProductToCart(productId).subscribe({
-      next: response => {
-        console.log(response.message);
-        this.alertResponse(response.message);
+      error: () => {
+        this.isLoading = false;
+        this._Toster.error('Could not load products. Please try again.');
       },
-    })
+    });
+  }
+
+  addProductToCart(productId: string): void {
+    this._CartService.addProductToCart(productId).subscribe({
+      next: (response: any) => this._Toster.success(response.message, '', {
+        timeOut: 3000,
+        progressBar: true,
+        closeButton: true,
+      }),
+      error: () => this._Toster.error('Could not add this product to your cart.'),
+    });
   }
 }

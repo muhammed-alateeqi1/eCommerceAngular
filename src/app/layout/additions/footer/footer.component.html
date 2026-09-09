@@ -1,57 +1,58 @@
-<footer class="bg-gray-100 py-8">
-  <div class="container mx-auto px-4">
-    
-    <!-- App Download Section -->
-    <div class="text-center mb-8">
-      <h2 class="text-xl md:text-2xl font-bold">Get the freshCart app</h2>
-      <p class="text-sm mt-2 text-gray-600">We will send you a link, open it on your phone to download the app</p>
-    </div>
+<footer class="mt-auto border-t border-gray-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+  <div class="container py-10">
 
-    <!-- Form Section -->
-    <div class="max-w-2xl mx-auto mb-8">
-      <form class="flex flex-col sm:flex-row items-center gap-3">
-        <input 
-          type="text" 
-          class="w-full rounded py-2 px-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-main focus:border-main" 
-          placeholder="Enter your phone number"
-        >
-        <button class="w-full sm:w-auto bg-main px-6 py-2 text-white rounded hover:opacity-90 transition-opacity whitespace-nowrap">
-          Share App link
-        </button>
+    <!-- App download prompt -->
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">Get the FreshCart app</h2>
+      <p class="mt-2 text-sm muted">
+        We will send you a link — open it on your phone to download the app.
+      </p>
+
+      <form class="mt-5 flex flex-col gap-3 sm:flex-row" (submit)="$event.preventDefault()">
+        <label for="footer-phone" class="sr-only">Phone number</label>
+        <input id="footer-phone" type="tel" class="field-input flex-1" placeholder="Enter your phone number">
+        <button type="submit" class="btn-primary shrink-0">Share App Link</button>
       </form>
     </div>
 
-    <hr class="border-gray-300 my-6">
+    <hr class="my-8 border-gray-200 dark:border-slate-800">
 
-    <!-- Payment Partners & App Links Section -->
-    <div class="flex flex-col md:flex-row gap-6">
-      
-      <!-- Payment Partners -->
-      <div class="w-full md:w-1/2">
-        <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2">
-          <span class="text-sm font-semibold mb-2 sm:mb-0">Payment Partners</span>
-          <div class="flex flex-wrap justify-center gap-3">
-            <img loading="lazy" src="assets/images/amazon-pay.png" alt="Amazon Pay" class="h-5">
-            <img loading="lazy" src="assets/images/American-Express-Color.png" alt="American Express" class="h-6">
-            <img loading="lazy" src="assets/images/mastercard.webp" alt="MasterCard" class="h-6">
-            <img loading="lazy" src="assets/images/paypal.png" alt="PayPal" class="h-6">
-            <img loading="lazy" src="assets/images/png-transparent-visa-logo-credit-card-visa-logo-payment-visa-blue-text-trademark-thumbnail-removebg-preview.png" alt="Visa" class="h-6">
-          </div>
+    <div class="flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:justify-between">
+
+      <!-- Payment partners -->
+      <div class="text-center lg:text-left">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Payment Partners</h3>
+        <div class="mt-3 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+          <img loading="lazy" src="assets/images/amazon-pay.png" alt="Amazon Pay"
+               class="h-5 w-auto opacity-70 transition-opacity hover:opacity-100 dark:brightness-0 dark:invert">
+          <img loading="lazy" src="assets/images/American-Express-Color.png" alt="American Express"
+               class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100">
+          <img loading="lazy" src="assets/images/mastercard.webp" alt="MasterCard"
+               class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100">
+          <img loading="lazy" src="assets/images/paypal.png" alt="PayPal"
+               class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100">
+          <img loading="lazy"
+               src="assets/images/png-transparent-visa-logo-credit-card-visa-logo-payment-visa-blue-text-trademark-thumbnail-removebg-preview.png"
+               alt="Visa" class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100">
         </div>
       </div>
-      
-      <!-- App Download Links -->
-      <div class="w-full md:w-1/2">
-        <div class="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-3">
-          <span class="text-sm font-semibold mb-2 sm:mb-0">Get deliveries with FreshCart</span>
-          <div class="flex gap-3">
-            <img loading="lazy" src="assets/images/get-apple-store.png" alt="App Store" class="h-8">
-            <img loading="lazy" src="assets/images/get-google-play.png" alt="Google Play" class="h-8">
-          </div>
+
+      <!-- Store links -->
+      <div class="text-center lg:text-right">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Get deliveries with FreshCart</h3>
+        <div class="mt-3 flex items-center justify-center gap-3 lg:justify-end">
+          <img loading="lazy" src="assets/images/get-apple-store.png" alt="Download on the App Store"
+               class="h-9 w-auto opacity-90 transition-opacity hover:opacity-100">
+          <img loading="lazy" src="assets/images/get-google-play.png" alt="Get it on Google Play"
+               class="h-9 w-auto opacity-90 transition-opacity hover:opacity-100">
         </div>
       </div>
-      
     </div>
-    
+
+    <hr class="my-8 border-gray-200 dark:border-slate-800">
+
+    <p class="text-center text-xs muted">
+      &copy; {{ year }} FreshCart. Built with Angular {{ angularVersion }}.
+    </p>
   </div>
 </footer>

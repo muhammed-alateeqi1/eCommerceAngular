@@ -1,31 +1,39 @@
-<section class="mx-auto">
-  <div class="container">
-    <div class="w-3/4 mx-auto">
-      <form [formGroup]="sendCodeForm" (ngSubmit)="submitResetCode()">
-        <h2 class="font-bold my-3 text-center text-2xl">Confirm ResetCode</h2>
-        <label class="font-bold" for="sendcode">Enter Code</label>
-        <input formControlName="resetCode" type="text" name="sendcode" class="w-full rounded">
-        @if(sendCodeForm.get('resetCode')?.errors && sendCodeForm.get('resetCode')?.touched){
-        <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100">
-          @if(sendCodeForm.get('resetCode')?.errors?.['required']){
-          <p class="font-medium">Send Code is required </p>
-          }@else if(sendCodeForm.get('resetCode')?.errors?.['pattern']){
-          <p class="font-medium">Send Code must be 6 characters</p>
+<section class="auth-shell">
+  <div class="w-full max-w-md">
+    <div class="card p-6 sm:p-8">
+      <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Enter your reset code</h1>
+        <p class="mt-1 text-sm muted">Check your inbox for the 6-digit code we sent</p>
+      </div>
+
+      <form [formGroup]="sendCodeForm" (ngSubmit)="submitResetCode()" novalidate>
+        <div class="mb-4">
+          <label class="field-label" for="resetCode">Reset code</label>
+          <input formControlName="resetCode" type="text" id="resetCode" inputmode="numeric"
+                 autocomplete="one-time-code" maxlength="6"
+                 class="field-input text-center text-lg tracking-[0.4em]" placeholder="000000">
+          @if (sendCodeForm.get('resetCode')?.errors && sendCodeForm.get('resetCode')?.touched) {
+            <div class="field-error">
+              @if (sendCodeForm.get('resetCode')?.errors?.['required']) { Reset code is required }
+              @else if (sendCodeForm.get('resetCode')?.errors?.['pattern']) { The code must be 6 characters }
+            </div>
           }
         </div>
-        }
+
         @if (errorMsg) {
-        <div class="my-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100">
-          <p class="font-medium">{{errorMsg}}</p>
-        </div>
+          <div class="field-error mb-4" role="alert">{{ errorMsg }}</div>
         }
-        <button class="bg-main py-2 px-3 rounded text-white my-3">
-          @if(sendCodeFlag){
-          <span><i class="fa fa-spin fa-spinner"></i></span>
-          }@else{
-          <span>Send Mail</span>
-          }
+
+        <button type="submit" class="btn-primary w-full !py-3" [disabled]="sendCodeFlag">
+          @if (sendCodeFlag) {
+            <i class="fa fa-spin fa-spinner" aria-hidden="true"></i> Verifying...
+          } @else { Verify Code }
         </button>
+
+        <p class="mt-5 text-center text-sm muted">
+          Didn't get it?
+          <a routerLink="/forgetpassword" class="font-semibold text-main hover:underline">Send again</a>
+        </p>
       </form>
     </div>
   </div>

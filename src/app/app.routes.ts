@@ -12,7 +12,7 @@ import { ShippingAdressComponent } from './layout/additions/shipping-adress/ship
 import { AllordersComponent } from './layout/additions/allorders/allorders.component';
 import { ShippingAddressCashComponent } from './layout/additions/shipping-address-cash/shipping-address-cash.component';
 import { CategoryProductsComponent } from './layout/pages/category-products/category-products.component';
-import { SettingsModule } from './settings/settings.module';
+// import { SettingsModule } from './settings/settings.module'; // practice module - see note below
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,7 +22,11 @@ export const routes: Routes = [
     { path: 'products', loadComponent: () => import('./layout/pages/products/products.component').then((c) => c.ProductsComponent), canActivate: [authGuard] },
     { path: 'brands', loadComponent: () => import('./layout/pages/brands/brands.component').then((c) => c.BrandsComponent), canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },
-    { path: 'settings', loadChildren: ()=> import('./settings/settings.module').then((m)=>m.SettingsModule) , canActivate: [authGuard]},
+    // The `settings` feature was built purely as an exercise in Angular NgModules
+    // and lazy `loadChildren` routing. It renders placeholder pages, so it is kept
+    // in the repo as a reference but is not part of the shipped storefront.
+    // Re-enable by uncommenting this route and the SettingsModule import above.
+    // { path: 'settings', loadChildren: () => import('./settings/settings.module').then((m) => m.SettingsModule), canActivate: [authGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'forgetpassword', component: ForgetpasswordComponent },
     { path: 'sendcode', component: SendcodeformComponent },

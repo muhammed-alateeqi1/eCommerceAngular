@@ -1,24 +1,46 @@
-<div class="container mx-auto px-4 my-10">
-    <h2 class="text-2xl font-bold text-center my-4">Category Products</h2>
+<section class="container py-8">
+  <div class="mb-6">
+    <a routerLink="/categories" class="text-sm font-medium text-main hover:underline">← All categories</a>
+    <h1 class="section-title mt-2">Category Products</h1>
+    @if (!isLoading) {
+      <p class="mt-1 text-sm muted">{{ products.length }} products in this category</p>
+    }
+  </div>
 
-    @if (isLoading) {
-    <div class="text-center">Loading...</div>
-    } @else {
-    @if (products.length > 0) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @for (product of products; track product.id) {
-        <a [routerLink]="['/productdetails', product.id]"
-            class="block p-4 border rounded shadow hover:shadow-md hover:bg-gray-50 transition cursor-pointer">
-            <img [src]="product.imageCover" class="w-full h-40 object-cover mb-2 rounded">
-            <h3 class="text-lg font-semibold">{{ product.title }}</h3>
-            <p class="text-sm text-gray-600">{{ product.price }} E£</p>
+  @if (isLoading) {
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      @for (placeholder of skeletons; track $index) {
+        <div class="card overflow-hidden">
+          <div class="skeleton aspect-square !rounded-none"></div>
+          <div class="space-y-2 p-3">
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-1/3"></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (products.length) {
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      @for (product of products; track product._id) {
+        <a [routerLink]="['/productdetails', product._id]" class="card-interactive group block overflow-hidden">
+          <div class="aspect-square overflow-hidden bg-gray-50 dark:bg-slate-800">
+            <img [src]="product.imageCover" [alt]="product.title" loading="lazy"
+                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+          </div>
+          <div class="p-3">
+            <h2 class="line-clamp-2 text-sm font-semibold text-gray-900 dark:text-white">{{ product.title }}</h2>
+            <p class="mt-2 font-bold text-gray-900 dark:text-white">
+              {{ product.price }} <span class="text-xs font-medium muted">EGP</span>
+            </p>
+          </div>
         </a>
-        }
+      }
     </div>
-    } @else {
-    <div class="text-center text-gray-600 py-6">
-        No products found for this category.
+  } @else {
+    <div class="card flex flex-col items-center gap-3 px-6 py-16 text-center">
+      <i class="fa-solid fa-box-open text-3xl muted" aria-hidden="true"></i>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">No products in this category</p>
+      <a routerLink="/products" class="btn-primary mt-2">Browse all products</a>
     </div>
-    }
-    }
-</div>
+  }
+</section>

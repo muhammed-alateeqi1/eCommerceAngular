@@ -1,58 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { loginService } from '../../../shared/services/authorization/login-service.service';
 import { LogoutService } from '../../../shared/services/authorization/logout.service';
-import { FlowbiteService } from '../../../shared/services/flowbite/flowbite.service';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { Data } from '../../../shared/interfaces/getLoggedUserCart';
+import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive , TranslateModule],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, ThemeToggleComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
-  cartCount !:number;
-    data !: Data;
-  logOut() {
-    throw new Error('Method not implemented.');
-  }
-  isLogin: boolean = false;
-  isLogout: boolean = false;
-  constructor(public _loginService: loginService, public _LogoutService: LogoutService, private _FlowbiteService: FlowbiteService, private _CartService: CartService) { }
+  private readonly _router = inject(Router);
+  private readonly _CartService = inject(CartService);
+
+  readonly _loginService = inject(loginService);
+  readonly _LogoutService = inject(LogoutService);
+
+  /**
+   * Mobile menu state. This used to be handled by Flowbite's
+   * `data-collapse-toggle`, but both menu panels shared the id `navbar-default`,
+   * so the toggle only ever reached the first one and the account links stayed
+   * hidden on small screens. Driving it from Angular keeps the two panels in
+   * one place and fixes that.
+   */
+  readonly isMenuOpen = signal(false);
+
+  isLogin = false;
+  cartCount = 0;
 
   ngOnInit(): void {
-    this._FlowbiteService.loadFlowbite(flowbite => {
-      // Your custom code here
-      console.log('Flowbite loaded', flowbite);
-    });
     this._loginService.userData.subscribe({
-      next: () => {
-        if (this._loginService.userData.getValue() != null) {
-          this.isLogin = true;
-        } else {
-          this.isLogin = false;
-        }
-      }
-    })
-    
-    this._CartService.cartItems$.subscribe(items => {
-    this.cartCount = items.reduce((sum, item) => sum + item.count, 0);
-    })
-  }
-   updateProductCartCount(productId: string, count: number) {
-      this._CartService.updateproductQuantity(productId, count.toString()).subscribe({
-        next: res => {
-          console.log(res);
-          this.data = res.data;
-        },
-        error: err => {
-          alert(err)
-        }
-      })
-    }
+      next: (user) => (this.isLogin = user != null),
+    });
 
+    this._CartService.cartItems$.subscribe((items) => {
+      this.cartCount = items.reduce((sum, item) => sum + (item?.count ?? 0), 0);
+    });
+
+    // Collapse the mobile menu after navigating, otherwise it covers the page
+    // the user just asked for.
+    this._router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.isMenuOpen.set(false));
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMenu();
+  }
+
+  logOut(): void {
+    this.closeMenu();
+    this._LogoutService.logOut();
+  }
 }

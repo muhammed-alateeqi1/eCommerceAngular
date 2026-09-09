@@ -1,101 +1,95 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { UserOrdersRes, UserOrders } from '../../../shared/interfaces/user-orders';
 import { loginService } from '../../../shared/services/authorization/login-service.service';
 import { OrderService } from '../../../shared/services/orders/order.service';
-import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-allorders',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterLink],
   templateUrl: './allorders.component.html',
-  styleUrl: './allorders.component.css'
+  styleUrl: './allorders.component.css',
 })
 export class AllordersComponent implements OnInit {
+  private readonly _loginService = inject(loginService);
+  private readonly _OrderService = inject(OrderService);
 
   userId!: string;
   userOrders: UserOrders[] = [];
-  isLoading: boolean = true;
-
-  constructor(private _loginService: loginService, private _OrderService: OrderService) { }
+  isLoading = true;
 
   ngOnInit(): void {
     this._loginService.userData.subscribe((data) => {
-      if (data) {
-        this.userId = data.id;
-        console.log('UserId :', this.userId);
+      if (!data) return;
+      this.userId = data.id;
 
-        this._OrderService.getUserOrders(this.userId).subscribe({
-          next: (res: UserOrdersRes) => {
-            console.log(res);
-            this.userOrders = res;
-            this.isLoading = false;
-          },
-          error: (err) => {
-            console.error('Error fetching orders:', err);
-            this.isLoading = false;
-          }
-        });
-      }
+      this._OrderService.getUserOrders(this.userId).subscribe({
+        next: (res: UserOrdersRes) => {
+          this.userOrders = res;
+          this.isLoading = false;
+        },
+        error: () => (this.isLoading = false),
+      });
     });
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('ar-EG', {
+    return new Date(dateString).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('ar-EG').format(price) + ' جنيه';
+    return new Intl.NumberFormat('en-EG').format(price) + ' EGP';
   }
 
   getPaymentMethodText(method: string): string {
-    return method === 'card' ? 'بطاقة ائتمان' : 'نقداً عند الاستلام';
+    return method === 'card' ? 'Credit card' : 'Cash on delivery';
   }
 
+  /** Tailwind classes for the status pill, appended to the base `badge` class. */
   getStatusClass(isPaid: boolean, isDelivered: boolean): string {
-    if (isDelivered) return 'delivered';
-    if (isPaid) return 'paid';
-    return 'pending';
+    if (isDelivered) return 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300';
+    if (isPaid) return 'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300';
+    return 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300';
   }
 
   getStatusText(isPaid: boolean, isDelivered: boolean): string {
-    if (isDelivered) return 'تم التسليم';
-    if (isPaid) return 'تم الدفع';
-    return 'في الانتظار';
+    if (isDelivered) return 'Delivered';
+    if (isPaid) return 'Paid';
+    return 'Pending';
   }
 
   downloadInvoice(orderId: string): void {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      console.warn('This code runs only in the browser.');
-      return;
-    }
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
     const invoiceElement = document.getElementById('invoice-' + orderId);
+    if (!invoiceElement) return;
 
-    if (!invoiceElement) {
-      console.warn(`لم يتم العثور على العنصر invoice-${orderId}`);
-      return;
-    }
+    const actions = invoiceElement.querySelectorAll<HTMLElement>('.order-actions');
+    actions.forEach((el) => (el.style.display = 'none'));
 
-    import('html2pdf.js').then((html2pdf: any) => {
-      const buttons = invoiceElement.querySelectorAll('.order-actions');
-      buttons.forEach((btn: any) => btn.style.display = 'none');
-      const options = {
-        margin: 10,
-        filename: `فاتورة-${orderId}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
+    const restore = () => actions.forEach((el) => el.style.removeProperty('display'));
 
-      html2pdf.default().from(invoiceElement).set(options).save();
-    }).catch((error) => {
-      console.error('فشل تحميل html2pdf:', error);
-    });
+    import('html2pdf.js')
+      .then((html2pdf: any) =>
+        html2pdf
+          .default()
+          .from(invoiceElement)
+          .set({
+            margin: 10,
+            filename: `invoice-${orderId}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          })
+          .save()
+      )
+      // The buttons were previously left hidden once the PDF had been produced,
+      // so the control disappeared until the page was reloaded.
+      .finally(restore);
   }
-
 }

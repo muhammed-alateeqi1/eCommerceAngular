@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { CartService } from '../../../shared/services/cart/cart.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CarouselModule],
+  imports: [CarouselModule, RouterLink],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
@@ -52,9 +52,12 @@ export class ProductDetailsComponent implements OnInit {
     this._ProductService.getProductById(id).subscribe({
       next: res => {
         this.product = res.data;
-        console.log(res.data);
         this.isLoading = false;
-      }
+      },
+      error: () => {
+        this.isLoading = false;
+        this._Toster.error('Could not load this product.');
+      },
     })
   }
   alerResponse(resMessage: string) {

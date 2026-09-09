@@ -1,4 +1,6 @@
-img{
-    height: 230px;
-    object-fit: cover;
+/* Scoped to this carousel's images only - the previous bare `img` selector
+   applied to every image the component rendered. */
+:host ::ng-deep owl-carousel-o img {
+  height: clamp(120px, 20vw, 230px);
+  object-fit: cover;
 }

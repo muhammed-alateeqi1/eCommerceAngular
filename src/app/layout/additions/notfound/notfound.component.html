@@ -1,3 +1,10 @@
-<div class="w-1/2 mx-auto h-screen center">
-    <img src="assets/images/error.svg" class="w-full" alt="">
-</div>
+<section class="container grid min-h-[70vh] place-items-center py-12">
+  <div class="flex max-w-md flex-col items-center text-center">
+    <img src="assets/images/error.svg" alt="" aria-hidden="true" class="w-full max-w-xs">
+    <h1 class="mt-8 text-2xl font-bold text-gray-900 dark:text-white">Page not found</h1>
+    <p class="mt-2 text-sm muted">
+      The page you are looking for does not exist or has been moved.
+    </p>
+    <a routerLink="/home" class="btn-primary mt-6">Back to home</a>
+  </div>
+</section>

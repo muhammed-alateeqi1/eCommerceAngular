@@ -1,39 +1,36 @@
-
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { BrandService } from '../../../shared/services/brands.service';
 import { BrandsRes, Daum } from '../../../shared/interfaces/BrandsRes';
 
 @Component({
-  standalone: true,
   selector: 'app-brands',
+  standalone: true,
+  imports: [],
   templateUrl: './brands.component.html',
-  styleUrls: ['./brands.component.css']
+  styleUrls: ['./brands.component.css'],
 })
 export class BrandsComponent implements OnInit {
-  brands: Daum[] = [];
-  loading: boolean = true;
+  private readonly _BrandService = inject(BrandService);
 
-  constructor(private _BrandService: BrandService) { }
+  brands: Daum[] = [];
+  loading = true;
+
+  readonly skeletons = Array.from({ length: 10 });
 
   ngOnInit(): void {
-    if (typeof localStorage != "undefined") {
-      localStorage.setItem('currentPage', '/brands')
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('currentPage', '/brands');
     }
-    this.getAllbrands()
+    this.getAllbrands();
   }
-  getAllbrands() {
+
+  getAllbrands(): void {
     this._BrandService.getAllBrands().subscribe({
       next: (res: BrandsRes) => {
         this.brands = res.data;
         this.loading = false;
-        console.log(res.data);
-
       },
-      error: (err) => {
-        console.error(err);
-        this.loading = false;
-      }
+      error: () => (this.loading = false),
     });
   }
 }
