@@ -41,7 +41,7 @@ eCommerceAngular/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/muhammed-alateeqi1/eCommerceAngular.git
+git clone https://github.com/z-ateeqiii/eCommerceAngular.git
 cd eCommerceAngular
 ```
 
@@ -177,7 +177,7 @@ edit is needed before deploying.
 
 ## 👤 Author
 
-Developed by [Muhammed Al-Ateeqi](https://github.com/muhammed-alateeqi1)  
+Developed by [Muhammed Al-Ateeqi](https://github.com/z-ateeqiii)  
 📧 Email: mu.alateeqi@gmail.com
 
 ---
