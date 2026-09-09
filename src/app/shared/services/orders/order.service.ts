@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Environment } from '../../../base/Environment';
 import { shippingAdress } from '../../interfaces/data';
-import { Observable, retryWhen } from 'rxjs';
+import { Observable } from 'rxjs';
 import { checkOutSessionResponse } from '../../interfaces/checkOutSessionResponse';
 import { UserOrdersRes } from '../../interfaces/user-orders';
 

@@ -1,7 +1,9 @@
 
 # 🛍️ eCommerce Angular SSR
 
-This is a production-ready **eCommerce frontend** built using **Angular 17** and **Server-Side Rendering (SSR)**. It includes complete authentication, routing, product handling, cart management, and server integration for scalable deployment.
+A **eCommerce frontend** built with **Angular 17** standalone components. It covers authentication, routing, product browsing, and cart management.
+
+The production build is **client-rendered** and deploys as a static SPA. An optional SSR/prerender build is kept behind a separate configuration — see [Rendering modes](#-rendering-modes).
 
 ---
 
@@ -14,8 +16,9 @@ eCommerceAngular/
 │   │   ├── layout/           # Pages and components (home, login, register, cart...)
 │   │   ├── shared/           # Services, interfaces, guards
 │   │   └── app.routes.ts     # All route definitions
-├── server.ts                 # Express SSR entry point
+├── server.ts                 # Express SSR entry point (optional `ssr` build only)
 ├── angular.json              # Angular CLI config
+├── vercel.json               # Vercel output dir + SPA fallback
 ├── package.json              # Dependencies & scripts
 ```
 
@@ -23,7 +26,7 @@ eCommerceAngular/
 
 ## 🚀 Features
 
-- ✅ Angular 17 (Standalone Components + Server-Side Rendering)
+- ✅ Angular 17 (Standalone Components, lazy-loaded routes)
 - 🔐 JWT Authentication with route protection
 - 🛒 Shopping Cart with persistent storage
 - 📃 Reactive Forms with validation (Login/Register)
@@ -56,16 +59,48 @@ npm start
 
 ---
 
-## 🖥️ SSR & Production Build
+## 🖥️ Rendering modes
 
-To build and run the application with SSR:
+**Production build (default) — client-rendered SPA:**
 
 ```bash
-npm run build
-npm run serve:ssr:eCommerceSession
+npm run build          # -> dist/browser
 ```
 
-App will be available at: `http://localhost:4000`
+**Optional SSR + prerender build:**
+
+```bash
+npm run build:ssr      # -> dist/browser + dist/server
+npm run serve:ssr      # http://localhost:4000
+```
+
+> ⚠️ SSR is **not** used by the default build. `authGuard` reads its login state
+> from a `BehaviorSubject` that is only populated in the browser, so on the server
+> every guarded route is rejected and prerendering emits the **login page for every
+> route**. Fix the guard to be platform-aware before turning SSR back on for
+> production.
+
+---
+
+## ☁️ Deployment (Vercel)
+
+`vercel.json` already contains everything needed:
+
+| Setting | Value |
+|---|---|
+| Build command | `npm run build` |
+| Output directory | `dist/browser` |
+| Rewrites | all non-asset paths → `/index.html` (SPA deep links) |
+
+Node version is pinned via `engines` in `package.json` and `.nvmrc` to the range
+Angular 17 supports (`^18.13.0 || ^20.9.0`). If a build fails with a Node version
+error, set **Project Settings → General → Node.js Version** to **20.x** in Vercel.
+
+```bash
+# from the repo root
+vercel            # preview deployment
+vercel --prod     # production deployment
+```
 
 ---
 
@@ -77,9 +112,12 @@ API configuration is located in:
 src/app/base/Environment.ts
 ```
 
-> ✅ In production, you should:
-> - Replace static `Environment.baseUrl` with `.env` support (using dotenv in server.ts)
-> - Use different environments (`environment.prod.ts`)
+`Environment.SiteURL` resolves from `window.location.origin` at call time, so the
+checkout redirect returns to whatever origin the app is served from — no per-environment
+edit is needed before deploying.
+
+> 🔄 Still worth doing:
+> - Move `Environment.baseUrl` into Angular's `environments/` files or build-time defines
 
 ---
 
@@ -107,7 +145,7 @@ src/app/base/Environment.ts
 | Apply Content Security Policy (CSP) | 🔄 | Set strict headers in Express |
 | SSR file path safety | ✔️ | SSR static serving is safe but should validate base paths |
 | No API keys or secrets in frontend | ✔️ | All API endpoints are generic |
-| Avoid CDN for critical assets | 🔄 | Move FontAwesome to local assets for reliability and control |
+| Avoid CDN for critical assets | ✔️ | FontAwesome CSS + webfonts are self-hosted from the npm package |
 
 ---
 
@@ -133,7 +171,7 @@ src/app/base/Environment.ts
 - [ ] Implement lazy loading for cart/products modules
 - [ ] Add logout auto-expiry via token `exp`
 - [ ] Translate form & alert messages (i18n)
-- [ ] Optimize SSR render for speed with static generation
+- [ ] Make `authGuard` platform-aware so SSR/prerender can be re-enabled
 
 ---
 
