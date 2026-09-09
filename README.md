@@ -1,7 +1,7 @@
 
-# 🛍️ eCommerce Angular SSR
+# 🛍️ eCommerce Angular
 
-A **eCommerce frontend** built with **Angular 17** standalone components. It covers authentication, routing, product browsing, and cart management.
+An **eCommerce frontend** built with **Angular 17** standalone components. It covers authentication, routing, product browsing, and cart management.
 
 The production build is **client-rendered** and deploys as a static SPA. An optional SSR/prerender build is kept behind a separate configuration — see [Rendering modes](#-rendering-modes).
 
@@ -19,6 +19,7 @@ eCommerceAngular/
 ├── server.ts                 # Express SSR entry point (optional `ssr` build only)
 ├── angular.json              # Angular CLI config
 ├── vercel.json               # Vercel output dir + SPA fallback
+├── .nvmrc                    # Node version for CI / Vercel
 ├── package.json              # Dependencies & scripts
 ```
 
@@ -104,6 +105,20 @@ vercel --prod     # production deployment
 
 ---
 
+## ⚡ Build output
+
+| | Raw | Transfer |
+|---|---|---|
+| Initial bundle | 719 KB | 174 KB |
+
+FontAwesome is loaded as a **stylesheet only**. The `@fortawesome/fontawesome-free`
+JS bundle (1.44 MB) used to be listed in `angular.json` → `scripts`, but `main.ts`
+set `config.autoReplaceSvg = false`, so it was downloaded on every page load and
+did nothing. Removing it and self-hosting the CSS cut the initial bundle from
+2.11 MB / 570 KB transfer to the numbers above.
+
+---
+
 ## 🌐 Environment Configuration
 
 API configuration is located in:
@@ -136,14 +151,14 @@ edit is needed before deploying.
 
 | Recommendation | Status | Notes |
 |----------------|--------|-------|
-| Remove `console.log` in production code | ✔️ | Already removed from login/register/services |
-| Verify JWT expiration in `auth.guard.ts` | ✔️ | Patched with `exp` check |
+| Remove `console.log` in production code | ❗ | 34 active calls remain across components and services; `login-service.ts` logs the decoded JWT payload to the console |
+| Verify JWT expiration in `auth.guard.ts` | ❗ | The guard only checks that a `BehaviorSubject` is non-null — there is no `exp` validation |
 | Avoid relying on `localStorage` for token | ❗ | Use `HttpOnly` cookies via backend instead |
-| Use Express middleware: `helmet`, `cors`, `rate-limit` | ❗ | Add to `server.ts` for added protection |
+| Use Express middleware: `helmet`, `cors`, `rate-limit` | ❗ | Only applies to the optional SSR build (`server.ts`) |
 | Sanitize user inputs | 🔄 | Add `ngx-mask` or Angular sanitizers where needed |
-| Avoid direct use of `headers.host` in SSR engine | ❗ | Use a trusted `BASE_URL` instead |
-| Apply Content Security Policy (CSP) | 🔄 | Set strict headers in Express |
-| SSR file path safety | ✔️ | SSR static serving is safe but should validate base paths |
+| Avoid direct use of `headers.host` in SSR engine | ❗ | Optional SSR build only; use a trusted `BASE_URL` instead |
+| Apply Content Security Policy (CSP) | 🔄 | Add a `headers` entry in `vercel.json` |
+| SSR file path safety | ✔️ | Optional SSR build only; static serving validates base paths |
 | No API keys or secrets in frontend | ✔️ | All API endpoints are generic |
 | Avoid CDN for critical assets | ✔️ | FontAwesome CSS + webfonts are self-hosted from the npm package |
 
@@ -158,7 +173,11 @@ edit is needed before deploying.
 
 ---
 
+## 🧪 Testing
 
+```bash
+npm test
+```
 
 > Coverage and e2e testing are recommended for production.
 
@@ -166,10 +185,11 @@ edit is needed before deploying.
 
 ## 📌 Suggested Improvements
 
-- [ ] Angular HTTP Interceptor for auth token injection
+- [x] Angular HTTP Interceptor for auth token injection (`setHeaderInterceptor`, scoped to cart/orders/wishlist URLs)
+- [x] Lazy loading for cart/categories/products/brands and the settings module
 - [ ] Use Angular environments + .env file for configs
-- [ ] Implement lazy loading for cart/products modules
 - [ ] Add logout auto-expiry via token `exp`
+- [ ] Strip `console.log` calls from production builds
 - [ ] Translate form & alert messages (i18n)
 - [ ] Make `authGuard` platform-aware so SSR/prerender can be re-enabled
 
